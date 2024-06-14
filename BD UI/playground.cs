@@ -1,8 +1,6 @@
-using MySql.Data.MySqlClient;
+Ôªøusing MySql.Data.MySqlClient;
 using System;
 using System.Data;
-using System.Data.Common;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace BD_UI
@@ -10,30 +8,33 @@ namespace BD_UI
     public partial class Playground : Form
     {
         private MySqlConnection connection;
-        private DataTable schemaTable;
+        private string cnx_str;
 
-        public Playground(MySqlConnection connection)
+        public Playground(MySqlConnection connection, string cnx_str)
         {
             InitializeComponent();
             this.connection = connection;
+            this.cnx_str = cnx_str;
             LoadTables();
         }
 
-        private void LoadTables()
+        private async void LoadTables()
         {
             string query = "SHOW TABLES";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
             list_tables.Items.Clear();
 
             try
             {
-
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
-                        string tableName = reader.GetString(0);
-                        list_tables.Items.Add(tableName);
+                        if (!reader.IsDBNull(0))
+                        {
+                            string tableName = reader.GetString(0);
+                            list_tables.Items.Add(tableName);
+                        }
                     }
                 }
             }
@@ -56,27 +57,24 @@ namespace BD_UI
             }
             else
             {
-                MessageBox.Show("Aucune table sÈlectionnÈe.", "Information");
+                MessageBox.Show("Aucune table s√©lectionn√©e.", "Information");
             }
         }
 
         private void LoadTableData(string tableName)
         {
-            // Valider et Èchapper correctement le nom de la table pour Èviter l'injection SQL
-            if (!Regex.IsMatch(tableName, @"^[a-zA-Z0-9_]+$"))
-            {
-                throw new ArgumentException("Nom de table invalide.");
-            }
-
             try
             {
-                string selectQuery = $"SELECT * FROM `{tableName}`";
-                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(selectQuery, connection);
-                DataTable dataTable = new DataTable();
-
-                dataAdapter.Fill(dataTable);
-
-                table_data.DataSource = dataTable;
+                using (MySqlConnection cnx = new MySqlConnection(cnx_str))
+                {
+                    string query = $"SELECT * FROM `{tableName}`";
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, cnx);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    table_data.DataSource = dt;
+                }
+                DataTable relatedTables = GetRelatedTables(tableName);
+                DisplayRelatedTables(relatedTables);
             }
             catch (MySqlException ex)
             {
@@ -87,86 +85,92 @@ namespace BD_UI
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
         }
-
-
-        /*
-        private void LoadTableData(string tableName)
-        {
-            // Valider et Èchapper correctement le nom de la table pour Èviter l'injection SQL
-            if (!Regex.IsMatch(tableName, @"^[a-zA-Z0-9_]+$"))
-            {
-                throw new ArgumentException("Nom de table invalide.");
-            }
-
-            // RÈcupÈrer les informations sur les colonnes de la table
-            string schemaQuery = $"SHOW COLUMNS FROM `{tableName}`";
-            MySqlCommand schemaCmd = new MySqlCommand(schemaQuery, connection);
-            MySqlDataAdapter schemaAdapter = new MySqlDataAdapter(schemaCmd);
-            DataTable schemaTable = new DataTable();
-
-            try
-            {
-                // Remplir le DataTable avec les informations de colonnes
-                schemaAdapter.Fill(schemaTable);
-
-                // Configuration des colonnes du DataGridView ‡ partir de schemaTable
-                table_data.Columns.Clear();
-                table_data.AutoGenerateColumns = false;
-
-                foreach (DataRow row in schemaTable.Rows)
-                {
-                    string columnName = row["Field"].ToString();
-                    DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn
-                    {
-                        Name = columnName,
-                        HeaderText = columnName,
-                        DataPropertyName = columnName
-                    };
-                    table_data.Columns.Add(column);
-                }
-
-                // SÈlectionner toutes les donnÈes de la table
-                DataTable schemaTable = new DataTable();
-
-                string selectQuery = $"SELECT * FROM {tableName} ;";
-                MySqlDataAdapter dataselectAdapter = new MySqlDataAdapter(selectQuery, connection);
-                MySqlDataAdapter selectAdapter = new MySqlDataAdapter(dataselectAdapter);
-
-                MessageBox.Show(selectQuery);
-                using ()
-                {
-                    MessageBox.Show("Adapter created");
-                    DataSet ds = new DataSet();
-                    dataAdapter.Fill(ds);
-
-                    // Configurer le DataGridView pour Ítre en lecture seule
-                    table_data.ReadOnly = true;
-
-                    // Lier le DataSet ou sa premiËre table au DataGridView
-                    if (ds.Tables.Count > 0)
-                    {
-                        table_data.DataSource = ds.Tables[0];
-                    }
-                    else
-                    {
-                        MessageBox.Show("Aucune donnÈe trouvÈe dans la table spÈcifiÈe.", "Information");
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
-            }
-        }
-        */
 
         private void playground_Load(object sender, EventArgs e)
         {
-            // Code ‡ exÈcuter lors du chargement du formulaire
+
         }
+
+        private void table_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private DataTable GetRelatedTables(string tableName)
+        {
+            DataTable schemaTable = new DataTable();
+            string query = $@"
+                SELECT DISTINCT
+                    REFERENCED_TABLE_NAME AS 'Table li√©e'
+                FROM
+                    INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                WHERE
+                    TABLE_NAME = '{tableName}'
+                    AND REFERENCED_TABLE_NAME IS NOT NULL";
+
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(schemaTable);
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+
+            return schemaTable;
+        }
+        private void DisplayRelatedTables(DataTable relatedTables)
+        {
+            RelatedTables.Controls.Clear();
+
+            foreach (DataRow row in relatedTables.Rows)
+            {
+                string relatedTableName = row["Table li√©e"].ToString();
+
+                // Cr√©er un bouton pour afficher le nom de la table li√©e
+                Button button = new Button();
+                button.Text = relatedTableName;
+                button.Click += (sender, e) =>
+                {
+                    // Action √† effectuer lors du clic sur le bouton (par exemple, afficher les donn√©es de la table li√©e)
+                    LoadRelatedTableData(relatedTableName);
+                };
+
+                // Ajouter le bouton au FlowLayoutPanel
+                RelatedTables.Controls.Add(button);
+            }
+        }
+
+        private void LoadRelatedTableData(string tableName)
+        {
+            try
+            {
+                using (MySqlConnection cnx = new MySqlConnection(cnx_str))
+                {
+                    string query = $"SELECT * FROM `{tableName}`";
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, cnx);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    RelatedTableData.DataSource = dt; // Assurez-vous que dataGridViewRelatedTableData est li√© uniquement √† dt
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+        }
+
+
     }
 }

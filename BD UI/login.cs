@@ -1,7 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 
 namespace BD_UI
 {
@@ -21,7 +21,7 @@ namespace BD_UI
             string databaseName = input_database.Text;
             Console.WriteLine("click");
 
-            if (!string.IsNullOrEmpty(username)  && !string.IsNullOrEmpty(host) && !string.IsNullOrEmpty(databaseName))
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(host) && !string.IsNullOrEmpty(databaseName))
             {
                 string connectionString = $"Server={host};Database={databaseName};Uid={username};Pwd={password};SslMode=none;";
 
@@ -30,27 +30,32 @@ namespace BD_UI
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         await connection.OpenAsync();
-
-                        //string query = "SHOW TABLES";
-                        //MySqlCommand cmd = new MySqlCommand(query, connection);
                         /*
-                        listBox1.Items.Clear(); 
-
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        string query = "SHOW TABLES";
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
                         {
-                            while (reader.Read())
+                            using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
                             {
-                                string tableName = reader.GetString(0);
-                                listBox1.Items.Add(tableName);
+                                comboBoxTables.Items.Clear();  // Clear existing items
+
+                                while (await reader.ReadAsync())
+                                {
+                                    if (!reader.IsDBNull(0))
+                                    {
+                                        string tableName = reader.GetString(0);
+                                        comboBoxTables.Items.Add(tableName);
+                                    }
+                                }
                             }
                         }
                         */
+                        
+                        // Optionnel : Masquer le formulaire de connexion et afficher le formulaire principal
                         this.Hide();
-
-                        Playground mainForm = new Playground(connection);
+                        Playground mainForm = new Playground(connection ,connectionString);
                         mainForm.ShowDialog();
-
                         this.Close();
+                        
                     }
                 }
                 catch (MySqlException ex)
@@ -68,24 +73,12 @@ namespace BD_UI
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
+        private void label1_Click(object sender, EventArgs e) { }
 
-        }
+        private void panel1_Paint(object sender, PaintEventArgs e) { }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
+        private void login_Load(object sender, EventArgs e) { }
 
-        }
-
-        private void login_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void input_password_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void input_password_TextChanged(object sender, EventArgs e) { }
     }
 }

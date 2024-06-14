@@ -30,9 +30,11 @@
         {
             list_tables = new ListBox();
             table_data = new DataGridView();
-            dataGridView = new DataGridView();
+            RelatedTableData = new DataGridView();
+            comboBoxTables = new ComboBox();
+            RelatedTables = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)table_data).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             SuspendLayout();
             // 
             // list_tables
@@ -46,41 +48,60 @@
             // 
             // table_data
             // 
-            table_data.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            table_data.Location = new Point(196, 24);
+            table_data.ColumnHeadersHeight = 29;
+            table_data.Location = new Point(170, 24);
             table_data.Name = "table_data";
             table_data.RowHeadersWidth = 51;
-            table_data.Size = new Size(428, 159);
+            table_data.Size = new Size(509, 227);
             table_data.TabIndex = 5;
             // 
-            // dataGridView
+            // RelatedTableData
             // 
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Location = new Point(196, 247);
-            dataGridView.Name = "dataGridView";
-            dataGridView.RowHeadersWidth = 51;
-            dataGridView.Size = new Size(428, 159);
-            dataGridView.TabIndex = 6;
+            RelatedTableData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RelatedTableData.Location = new Point(170, 309);
+            RelatedTableData.Name = "RelatedTableData";
+            RelatedTableData.RowHeadersWidth = 51;
+            RelatedTableData.Size = new Size(509, 159);
+            RelatedTableData.TabIndex = 6;
+            // 
+            // comboBoxTables
+            // 
+            comboBoxTables.FormattingEnabled = true;
+            comboBoxTables.Location = new Point(712, 41);
+            comboBoxTables.Name = "comboBoxTables";
+            comboBoxTables.Size = new Size(151, 28);
+            comboBoxTables.TabIndex = 7;
+            // 
+            // RelatedTables
+            // 
+            RelatedTables.Location = new Point(171, 261);
+            RelatedTables.Name = "RelatedTables";
+            RelatedTables.Size = new Size(508, 42);
+            RelatedTables.TabIndex = 8;
             // 
             // Playground
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(889, 494);
-            Controls.Add(dataGridView);
+            Controls.Add(RelatedTables);
+            Controls.Add(comboBoxTables);
+            Controls.Add(RelatedTableData);
             Controls.Add(table_data);
             Controls.Add(list_tables);
             Name = "Playground";
             Text = "Playground";
             Load += playground_Load;
             ((System.ComponentModel.ISupportInitialize)table_data).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)RelatedTableData).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private ListBox list_tables;
         private DataGridView table_data;
-        private DataGridView dataGridView;
+        private DataGridView RelatedTableData;
+        private ComboBox comboBoxTables;
+        private FlowLayoutPanel RelatedTables;
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
+            RelatedTable = new Panel();
             logbutton = new Button();
             input_database = new TextBox();
             label1 = new Label();
@@ -38,27 +38,27 @@
             UserLabel = new Label();
             input_host = new TextBox();
             Host_label = new Label();
-            panel1.SuspendLayout();
+            RelatedTable.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // RelatedTable
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            panel1.BackColor = SystemColors.Control;
-            panel1.Controls.Add(logbutton);
-            panel1.Controls.Add(input_database);
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(input_password);
-            panel1.Controls.Add(password_label);
-            panel1.Controls.Add(input_username);
-            panel1.Controls.Add(UserLabel);
-            panel1.Controls.Add(input_host);
-            panel1.Controls.Add(Host_label);
-            panel1.Location = new Point(351, -1);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(471, 457);
-            panel1.TabIndex = 0;
-            panel1.Paint += panel1_Paint;
+            RelatedTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            RelatedTable.BackColor = SystemColors.Control;
+            RelatedTable.Controls.Add(logbutton);
+            RelatedTable.Controls.Add(input_database);
+            RelatedTable.Controls.Add(label1);
+            RelatedTable.Controls.Add(input_password);
+            RelatedTable.Controls.Add(password_label);
+            RelatedTable.Controls.Add(input_username);
+            RelatedTable.Controls.Add(UserLabel);
+            RelatedTable.Controls.Add(input_host);
+            RelatedTable.Controls.Add(Host_label);
+            RelatedTable.Location = new Point(351, -1);
+            RelatedTable.Name = "RelatedTable";
+            RelatedTable.Size = new Size(471, 457);
+            RelatedTable.TabIndex = 0;
+            RelatedTable.Paint += panel1_Paint;
             // 
             // logbutton
             // 
@@ -76,7 +76,7 @@
             input_database.Name = "input_database";
             input_database.Size = new Size(225, 27);
             input_database.TabIndex = 8;
-            input_database.Text = "gestion_des_paies";
+            input_database.Text = "bibliotheque";
             // 
             // label1
             // 
@@ -93,7 +93,6 @@
             input_password.Name = "input_password";
             input_password.Size = new Size(225, 27);
             input_password.TabIndex = 5;
-            input_password.Text = "0802";
             input_password.TextChanged += input_password_TextChanged;
             // 
             // password_label
@@ -128,7 +127,7 @@
             input_host.Name = "input_host";
             input_host.Size = new Size(225, 27);
             input_host.TabIndex = 1;
-            input_host.Text = "127.0.0.1";
+            input_host.Text = "localhost";
             // 
             // Host_label
             // 
@@ -146,12 +145,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.HotTrack;
             ClientSize = new Size(822, 456);
-            Controls.Add(panel1);
+            Controls.Add(RelatedTable);
             Name = "Login";
             Text = "Login";
             Load += login_Load;
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            RelatedTable.ResumeLayout(false);
+            RelatedTable.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -167,5 +166,6 @@
         private TextBox input_database;
         private Label label1;
         private Button logbutton;
+        private Panel RelatedTable;
     }
 }
