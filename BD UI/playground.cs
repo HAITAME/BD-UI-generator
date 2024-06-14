@@ -171,6 +171,10 @@ namespace BD_UI
             }
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Editor editor = new Editor(connection ,cnx_str);
+            editor.ShowDialog();
+        }
     }
 }
