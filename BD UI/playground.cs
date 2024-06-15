@@ -32,6 +32,13 @@ namespace BD_UI
 
             }
         }
+        private void Disconnect()
+        {
+            if (connection.State != ConnectionState.Closed)
+            {
+                connection.Close();
+            }
+        }
         private async void LoadTables()
         {
             Connecte();
@@ -60,6 +67,10 @@ namespace BD_UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+            finally
+            {
+                Disconnect();
             }
         }
         private void list_tables_SelectedIndexChanged(object sender, EventArgs e)
@@ -103,6 +114,10 @@ namespace BD_UI
             {
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
+            finally
+            {
+                Disconnect();
+            }
         }
         private void playground_Load(object sender, EventArgs e)
         {
@@ -141,6 +156,10 @@ namespace BD_UI
             {
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
+            finally
+            {
+                Disconnect();
+            }
 
             return schemaTable;
         }
@@ -166,6 +185,7 @@ namespace BD_UI
         {
             try
             {
+                Connecte();
                 using (MySqlConnection cnx = new MySqlConnection(cnx_str))
                 {
                     string query = $"SELECT * FROM `{tableName}`";
@@ -183,18 +203,20 @@ namespace BD_UI
             {
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
+            finally
+            {
+                Disconnect();
+            }
         }
         private void button1_Click(object sender, EventArgs e)
         {
             Editor editor = new Editor(connection, cnx_str);
-            editor.ShowDialog();
-            
+            editor.ShowDialog();           
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
                 LoadTableData(selectedTableName);                
             }
-            
-
+            Disconnect();
         }
         private void add_Click(object sender, EventArgs e)
         {
@@ -210,6 +232,7 @@ namespace BD_UI
         {
             try
             {
+                Connecte();
                 using (MySqlConnection cnx = new MySqlConnection(cnx_str))
                 {
                     string query = $"DESCRIBE`{tableName}`";
@@ -226,6 +249,10 @@ namespace BD_UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+            finally
+            {
+                Disconnect();
             }
         }
         private void tabPage1_Click(object sender, EventArgs e)
@@ -265,6 +292,10 @@ namespace BD_UI
             {
                 MessageBox.Show("Selectionner une ligne valide");
             }
+            finally {
+                Disconnect();
+            }
+
 
 
         }
