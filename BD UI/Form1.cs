@@ -20,7 +20,6 @@ namespace BD_UI
         private int currentIndex = -1;
         public int DeleteResult { get; private set; }
         public int UpdateResult { get; private set; }
-        DataTable OneRowdataTable = new DataTable();
         public Editor(MySqlConnection connection, string connectionString, int data_id = -1, string data_tableName = "")
         {
             InitializeComponent();
