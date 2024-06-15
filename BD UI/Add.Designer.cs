@@ -28,29 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Addpanel = new Panel();
             SuspendLayout();
-            // 
-            // Addpanel
-            // 
-            Addpanel.Location = new Point(4, 0);
-            Addpanel.Name = "Addpanel";
-            Addpanel.Size = new Size(793, 451);
-            Addpanel.TabIndex = 0;
             // 
             // Add
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(Addpanel);
             Name = "Add";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Add";
+            Load += Add_Load;
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel Addpanel;
     }
 }

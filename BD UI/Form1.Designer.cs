@@ -127,6 +127,7 @@
             Controls.Add(comboBoxTables);
             Controls.Add(panelEditor);
             Controls.Add(panel1);
+            ForeColor = SystemColors.ActiveCaption;
             Name = "Editor";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Editeur";

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -20,24 +19,23 @@ namespace BD_UI
         private DataTable dataTable;
         private int currentIndex = -1;
         private System.Windows.Forms.Label lblIndex;
+        public int DeleteResult { get; private set; }
+        public int UpdateResult { get; private set; }
+
         public Editor(MySqlConnection connection, string connectionString)
         {
             InitializeComponent();
             this.connection = connection;
             this.connectionString = connectionString;
-
             LoadTables();
-
         }
 
         private async void LoadTables()
         {
             comboBoxTables.Items.Clear();
-
             try
             {
                 DataTable schemaTable = connection.GetSchema("Tables");
-
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     string tableName = row["TABLE_NAME"].ToString();
@@ -63,7 +61,7 @@ namespace BD_UI
             }
         }
 
-        private async Task LoadData(string tableName)
+        private async Task LoadData(string tableName , int index =0)
         {
             try
             {
@@ -71,10 +69,8 @@ namespace BD_UI
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 dataTable = new DataTable();
-                adapter.Fill(dataTable);
-
-                // Afficher la première ligne dans le panel
-                currentIndex = 0;
+                await Task.Run(() => adapter.Fill(dataTable)); // Use Task.Run to avoid blocking the UI thread
+                currentIndex = index;
                 DisplayRow(currentIndex);
             }
             catch (MySqlException ex)
@@ -89,8 +85,6 @@ namespace BD_UI
 
         private void DisplayRow(int index)
         {
-            // lblIndex.Text = $"Index: {currentIndex}";
-
             if (dataTable != null && dataTable.Rows.Count > 0 && index >= 0 && index < dataTable.Rows.Count)
             {
                 currentRow = dataTable.Rows[index];
@@ -99,22 +93,21 @@ namespace BD_UI
                 int yPos = 10;
                 foreach (DataColumn column in dataTable.Columns)
                 {
-                    Label labe_id = new Label();
-                    labe_id.Text = $"{column.ColumnName}:";
-                    labe_id.AutoSize = true;
-                    labe_id.Location = new System.Drawing.Point(10, yPos);
-                    panelEditor.Controls.Add(labe_id);
+                    Label label = new Label();
+                    label.Text = $"{column.ColumnName}:";
+                    label.AutoSize = true;
+                    label.Location = new System.Drawing.Point(10, yPos);
+                    panelEditor.Controls.Add(label);
 
                     Control inputControl = null;
-                    if(column.ColumnName == "id")
+                    if (column.ColumnName.ToLower() == "id")
                     {
-                        Label label = new Label();
-                        label.Text = currentRow[column].ToString();
-                        label.Location = new System.Drawing.Point(150, yPos);
-                        label.Width = 100;
-                        label.Name = column.ColumnName;
-                        inputControl = label;
-
+                        Label idLabel = new Label();
+                        idLabel.Text = currentRow[column].ToString();
+                        idLabel.Location = new System.Drawing.Point(150, yPos);
+                        idLabel.Width = 100;
+                        idLabel.Name = column.ColumnName;
+                        inputControl = idLabel;
                     }
                     else if (column.DataType == typeof(int))
                     {
@@ -166,11 +159,11 @@ namespace BD_UI
                 }
             }
         }
+
         private void btnPrevious_Click_1(object sender, EventArgs e)
         {
             if (currentIndex > 0)
             {
-
                 currentIndex--;
                 DisplayRow(currentIndex);
             }
@@ -185,30 +178,34 @@ namespace BD_UI
             }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (currentRow != null)
             {
-                // Récupérer l'ID ou toute clé primaire nécessaire pour la suppression
-                int idToDelete = Convert.ToInt32(currentRow["ID"]); // Exemple d'ID primaire
-
-                // Exécuter la requête de suppression
+                int idToDelete = Convert.ToInt32(currentRow["id"]);
                 try
                 {
-                    string deleteQuery = $"DELETE FROM `{tableName}` WHERE ID = @idToDelete";
+                    string deleteQuery = $"DELETE FROM `{tableName}` WHERE id = @idToDelete";
                     MySqlCommand deleteCmd = new MySqlCommand(deleteQuery, connection);
                     deleteCmd.Parameters.AddWithValue("@idToDelete", idToDelete);
-                    deleteCmd.ExecuteNonQueryAsync();
+                    await deleteCmd.ExecuteNonQueryAsync(); // Await the async operation
+
+                    MessageBox.Show("L'enregistrement a été supprimé avec succès.", "Suppression réussie", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DeleteResult = 1;
                     currentIndex--;
-                    DisplayRow(currentIndex);
+                    LoadData(tableName, currentIndex);
+                    
+
                 }
                 catch (MySqlException ex)
                 {
                     MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+                    DeleteResult = 0;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+                    DeleteResult = 0;
                 }
             }
         }
@@ -219,11 +216,9 @@ namespace BD_UI
             {
                 try
                 {
-                    // Mettre à jour les valeurs de currentRow à partir des contrôles du panel
                     foreach (Control control in panelEditor.Controls)
                     {
-                        string columnName = control.Name; // Utiliser le nom du contrôle comme nom de colonne
-
+                        string columnName = control.Name;
                         if (control is TextBox textBox)
                         {
                             currentRow[columnName] = textBox.Text;
@@ -242,67 +237,53 @@ namespace BD_UI
                         }
                     }
 
-                    // Construction de la requête UPDATE dynamique
                     StringBuilder updateQuery = new StringBuilder($"UPDATE `{tableName}` SET ");
                     List<MySqlParameter> parameters = new List<MySqlParameter>();
 
-                    // Itérer sur les colonnes de la table
                     foreach (DataColumn column in dataTable.Columns)
                     {
-                        // Exclure la clé primaire (si connue) ou d'autres colonnes spécifiques si nécessaire
-                        if (column.ColumnName.ToLower() != "id") // Exemple d'exclusion de la colonne ID
+                        if (column.ColumnName.ToLower() != "id")
                         {
                             updateQuery.Append($"`{column.ColumnName}` = @{column.ColumnName}, ");
-
-                            // Vérifier si le paramètre existe déjà dans la collection
                             MySqlParameter existingParameter = parameters.FirstOrDefault(p => p.ParameterName == $"@{column.ColumnName}");
                             if (existingParameter != null)
                             {
-                                // Mettre à jour la valeur du paramètre existant
                                 existingParameter.Value = currentRow[column];
                             }
                             else
                             {
-                                // Ajouter un nouveau paramètre
                                 parameters.Add(new MySqlParameter($"@{column.ColumnName}", currentRow[column]));
                             }
                         }
                     }
 
-                    // Supprimer la virgule et l'espace après la dernière colonne mise à jour
                     if (updateQuery.Length > 0)
                     {
-                        updateQuery.Remove(updateQuery.Length - 2, 2); // Supprime ", " à la fin
+                        updateQuery.Remove(updateQuery.Length - 2, 2);
                     }
 
-                    // Ajouter la clause WHERE pour la clé primaire (ID)
                     updateQuery.Append($" WHERE `id` = @ID");
-                    parameters.Add(new MySqlParameter("@ID", currentRow["id"])); // Assurez-vous que le nom de colonne clé primaire est correct
+                    parameters.Add(new MySqlParameter("@ID", currentRow["id"]));
 
-                    // Afficher la requête construite avec les valeurs des paramètres dans un MessageBox pour le débogage
-                    StringBuilder debugQuery = new StringBuilder(updateQuery.ToString());
-                    foreach (var param in parameters)
-                    {
-                        debugQuery.Replace(param.ParameterName, param.Value.ToString());
-                    }
-                    //MessageBox.Show(debugQuery.ToString(), "Requête SQL avec valeurs");
-
-                    // Création et exécution de la commande
                     using (MySqlCommand updateCmd = new MySqlCommand(updateQuery.ToString(), connection))
                     {
                         updateCmd.Parameters.AddRange(parameters.ToArray());
                         await updateCmd.ExecuteNonQueryAsync();
                     }
-                    //MessageBox.Show(updateQuery.ToString(), "Requête SQL");
+
                     MessageBox.Show("Les modifications ont été enregistrées avec succès.", "Sauvegarde réussie", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UpdateResult = 1;
+                    DisplayRow(currentIndex); // Update display without reloading entire table
                 }
                 catch (MySqlException ex)
                 {
                     MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UpdateResult = 0;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Erreur : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UpdateResult = 0;
                 }
             }
             else
@@ -310,10 +291,10 @@ namespace BD_UI
                 MessageBox.Show("Aucune ligne sélectionnée pour la sauvegarde.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void btnSave_Click(object sender, EventArgs e)
+
+        private async void btnSave_Click(object sender, EventArgs e)
         {
-            SaveChanges(); 
+            await SaveChanges();
         }
     }
-
 }

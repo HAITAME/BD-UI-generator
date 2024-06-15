@@ -10,13 +10,13 @@ namespace BD_UI
         private MySqlConnection connection;
         private string cnx_str;
         string selectedTableName;
-
         public Playground(MySqlConnection connection, string cnx_str)
         {
             InitializeComponent();
             this.connection = connection;
             this.cnx_str = cnx_str;
             this.add.Enabled = false;
+            this.add.Visible = false;
             LoadTables();
         }
 
@@ -59,6 +59,7 @@ namespace BD_UI
                 LoadTableSchema(selectedTableName);
 
                 this.add.Enabled = true;
+                this.add.Visible = true;
 
             }
             else
@@ -184,6 +185,12 @@ namespace BD_UI
         {
             Add add = new Add(connection, selectedTableName);
             add.ShowDialog();
+            int r = add.InsertResult;
+            if (r == 1)
+            {
+                LoadTableData(selectedTableName);
+            }
+
 
         }
 
@@ -218,6 +225,11 @@ namespace BD_UI
 
         }
         private void RelatedTables_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
         }
