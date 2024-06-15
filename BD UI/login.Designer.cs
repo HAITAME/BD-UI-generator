@@ -67,9 +67,9 @@
             checkBox1.AutoSize = true;
             checkBox1.Location = new Point(307, 249);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(101, 24);
+            checkBox1.Size = new Size(83, 24);
             checkBox1.TabIndex = 10;
-            checkBox1.Text = "checkBox1";
+            checkBox1.Text = "Afficher";
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 

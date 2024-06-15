@@ -228,6 +228,7 @@
             table_data.RowHeadersWidth = 51;
             table_data.Size = new Size(792, 521);
             table_data.TabIndex = 5;
+            table_data.CellContentClick += table_data_CellContentClick_1;
             // 
             // Liste
             // 
