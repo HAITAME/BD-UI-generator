@@ -76,7 +76,6 @@
             input_database.Name = "input_database";
             input_database.Size = new Size(225, 27);
             input_database.TabIndex = 8;
-            input_database.Text = "bibliotheque";
             // 
             // label1
             // 
