@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             RelatedTable = new Panel();
+            checkBox1 = new CheckBox();
             logbutton = new Button();
             input_database = new TextBox();
             label1 = new Label();
@@ -45,6 +46,7 @@
             // 
             RelatedTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             RelatedTable.BackColor = SystemColors.Control;
+            RelatedTable.Controls.Add(checkBox1);
             RelatedTable.Controls.Add(logbutton);
             RelatedTable.Controls.Add(input_database);
             RelatedTable.Controls.Add(label1);
@@ -59,6 +61,17 @@
             RelatedTable.Size = new Size(471, 457);
             RelatedTable.TabIndex = 0;
             RelatedTable.Paint += panel1_Paint;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(307, 249);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(101, 24);
+            checkBox1.TabIndex = 10;
+            checkBox1.Text = "checkBox1";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // logbutton
             // 
@@ -167,5 +180,6 @@
         private Label label1;
         private Button logbutton;
         private Panel RelatedTable;
+        private CheckBox checkBox1;
     }
 }

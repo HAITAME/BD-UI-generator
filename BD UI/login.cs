@@ -11,6 +11,8 @@ namespace BD_UI
         {
             InitializeComponent();
             Console.WriteLine("Login start");
+            input_password.PasswordChar = '*';
+
         }
 
         private async void logbutton_Click(object sender, EventArgs e)
@@ -49,13 +51,13 @@ namespace BD_UI
                             }
                         }
                         */
-                        
+
                         // Optionnel : Masquer le formulaire de connexion et afficher le formulaire principal
                         this.Hide();
-                        Playground mainForm = new Playground(connection ,connectionString);
+                        Playground mainForm = new Playground(connection, connectionString);
                         mainForm.ShowDialog();
                         this.Close();
-                        
+
                     }
                 }
                 catch (MySqlException ex)
@@ -80,5 +82,18 @@ namespace BD_UI
         private void login_Load(object sender, EventArgs e) { }
 
         private void input_password_TextChanged(object sender, EventArgs e) { }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox.Checked)
+            {
+                input_password.PasswordChar = '\0'; 
+            }
+            else
+            {
+                input_password.PasswordChar = '*';
+            }
+        }
     }
 }
