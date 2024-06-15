@@ -214,9 +214,9 @@ namespace BD_UI
             editor.ShowDialog();           
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
+                Disconnect();
                 LoadTableData(selectedTableName);                
             }
-            Disconnect();
         }
         private void add_Click(object sender, EventArgs e)
         {
