@@ -115,7 +115,7 @@
             btnPrevious.TabIndex = 0;
             btnPrevious.Text = "Previous";
             btnPrevious.UseVisualStyleBackColor = true;
-            btnPrevious.Click += btnPrevious_Click_1;
+            btnPrevious.Click += btnPrevious_Click;
             // 
             // Editor
             // 
@@ -131,6 +131,7 @@
             Name = "Editor";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Editeur";
+            Load += Editor_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();

@@ -22,15 +22,24 @@ namespace BD_UI
         public int DeleteResult { get; private set; }
         public int UpdateResult { get; private set; }
 
-        public Editor(MySqlConnection connection, string connectionString , int data_id = -1 , string data_tableName ="")
+        public Editor(MySqlConnection connection, string connectionString, int data_id = -1, string data_tableName = "")
         {
             InitializeComponent();
             this.connection = connection;
             this.connectionString = connectionString;
             btnPrevious.Visible = false;
             btnNext.Visible = false;
-            if (data_id != -1) {
-                LoadOneRowData(data_tableName , data_id );
+            if (data_id != -1)
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }else
+                    {
+                    connection.Close();
+                    connection.Open();
+                }
+                LoadOneRowData(data_tableName, data_id);
                 comboBoxTables.Text = data_tableName;
                 this.tableName = data_tableName;
             }
@@ -38,9 +47,9 @@ namespace BD_UI
             {
                 btnDelete.Visible = false;
                 btnSave.Visible = false;
-            }           
+            }
             LoadTables();
-           
+
         }
 
         private async void LoadTables()
@@ -48,12 +57,17 @@ namespace BD_UI
             comboBoxTables.Items.Clear();
             try
             {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
                 DataTable schemaTable = connection.GetSchema("Tables");
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     string tableName = row["TABLE_NAME"].ToString();
                     comboBoxTables.Items.Add(tableName);
                 }
+                connection.Close();
             }
             catch (MySqlException ex)
             {
@@ -78,21 +92,32 @@ namespace BD_UI
             }
         }
 
-        private async Task LoadData(string tableName , int index =0)
+        private async Task LoadData(string tableName, int index = 0)
         {
             try
             {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
                 string query = $"SELECT * FROM `{tableName}`";
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                    { 
+                    {
                         dataTable = new DataTable();
                         await Task.Run(() => adapter.Fill(dataTable));
                     }
                 }
+
+                if (dataTable.Rows.Count == 0)
+                {
+                    panelEditor.Controls.Clear();
+                    return;
+                }
                 currentIndex = index;
                 DisplayRow(currentIndex);
+                connection.Close();
             }
             catch (MySqlException ex)
             {
@@ -186,12 +211,30 @@ namespace BD_UI
         {
             try
             {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+                else
+                {
+                    connection.Close();
+                    connection.Open();
+
+
+                }
+
                 string query = $"SELECT * FROM `{tableName}` WHERE id = {id}";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                dataTable = new DataTable();
-                await Task.Run(() => adapter.Fill(dataTable));
-                DisplayOneRow();
+                DataTable OneRowdataTable = new DataTable();
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        await Task.Run(() => adapter.Fill(OneRowdataTable));
+                    }
+                }
+                DisplayOneRow(OneRowdataTable);
+                connection.Close();
+
             }
             catch (MySqlException ex)
             {
@@ -203,83 +246,83 @@ namespace BD_UI
             }
         }
 
-        private void DisplayOneRow()
+        private void DisplayOneRow(DataTable OneRowdataTable)
         {
-            
-                currentRow = dataTable.Rows[0];
-                panelEditor.Controls.Clear();
 
-                int yPos = 10;
-                foreach (DataColumn column in dataTable.Columns)
+            currentRow = OneRowdataTable.Rows[0];
+            panelEditor.Controls.Clear();
+
+            int yPos = 10;
+            foreach (DataColumn column in OneRowdataTable.Columns)
+            {
+                Label label = new Label();
+                label.Text = $"{column.ColumnName}:";
+                label.AutoSize = true;
+                label.Location = new System.Drawing.Point(10, yPos);
+                panelEditor.Controls.Add(label);
+
+                Control inputControl = null;
+                if (column.ColumnName.ToLower() == "id")
                 {
-                    Label label = new Label();
-                    label.Text = $"{column.ColumnName}:";
-                    label.AutoSize = true;
-                    label.Location = new System.Drawing.Point(10, yPos);
-                    panelEditor.Controls.Add(label);
-
-                    Control inputControl = null;
-                    if (column.ColumnName.ToLower() == "id")
-                    {
-                        Label idLabel = new Label();
-                        idLabel.Text = currentRow[column].ToString();
-                        idLabel.Location = new System.Drawing.Point(150, yPos);
-                        idLabel.Width = 100;
-                        idLabel.Name = column.ColumnName;
-                        inputControl = idLabel;
-                    }
-                    else if (column.DataType == typeof(int))
-                    {
-                        NumericUpDown numericUpDown = new NumericUpDown();
-                        numericUpDown.Value = Convert.ToInt32(currentRow[column]);
-                        numericUpDown.Location = new System.Drawing.Point(150, yPos);
-                        numericUpDown.Width = 100;
-                        numericUpDown.Name = column.ColumnName;
-                        inputControl = numericUpDown;
-                    }
-                    else if (column.DataType == typeof(string))
-                    {
-                        TextBox textBox = new TextBox();
-                        textBox.Text = currentRow[column].ToString();
-                        textBox.Location = new System.Drawing.Point(150, yPos);
-                        textBox.Width = 200;
-                        textBox.Name = column.ColumnName;
-                        inputControl = textBox;
-                    }
-                    else if (column.DataType == typeof(DateTime))
-                    {
-                        DateTimePicker dateTimePicker = new DateTimePicker();
-                        dateTimePicker.Value = Convert.ToDateTime(currentRow[column]);
-                        dateTimePicker.Location = new System.Drawing.Point(150, yPos);
-                        dateTimePicker.Width = 150;
-                        inputControl = dateTimePicker;
-                        inputControl.Name = column.ColumnName;
-                    }
-                    else if (column.DataType == typeof(bool))
-                    {
-                        CheckBox checkBox = new CheckBox();
-                        checkBox.Checked = Convert.ToBoolean(currentRow[column]);
-                        checkBox.Location = new System.Drawing.Point(150, yPos);
-                        checkBox.Name = column.ColumnName;
-                        inputControl = checkBox;
-                    }
-                    else
-                    {
-                        TextBox textBox = new TextBox();
-                        textBox.Text = currentRow[column].ToString();
-                        textBox.Location = new System.Drawing.Point(150, yPos);
-                        textBox.Width = 200;
-                        textBox.Name = column.ColumnName;
-                        inputControl = textBox;
-                    }
-
-                    panelEditor.Controls.Add(inputControl);
-                    yPos += 30;
+                    Label idLabel = new Label();
+                    idLabel.Text = currentRow[column].ToString();
+                    idLabel.Location = new System.Drawing.Point(150, yPos);
+                    idLabel.Width = 100;
+                    idLabel.Name = column.ColumnName;
+                    inputControl = idLabel;
                 }
-            
+                else if (column.DataType == typeof(int))
+                {
+                    NumericUpDown numericUpDown = new NumericUpDown();
+                    numericUpDown.Value = Convert.ToInt32(currentRow[column]);
+                    numericUpDown.Location = new System.Drawing.Point(150, yPos);
+                    numericUpDown.Width = 100;
+                    numericUpDown.Name = column.ColumnName;
+                    inputControl = numericUpDown;
+                }
+                else if (column.DataType == typeof(string))
+                {
+                    TextBox textBox = new TextBox();
+                    textBox.Text = currentRow[column].ToString();
+                    textBox.Location = new System.Drawing.Point(150, yPos);
+                    textBox.Width = 200;
+                    textBox.Name = column.ColumnName;
+                    inputControl = textBox;
+                }
+                else if (column.DataType == typeof(DateTime))
+                {
+                    DateTimePicker dateTimePicker = new DateTimePicker();
+                    dateTimePicker.Value = Convert.ToDateTime(currentRow[column]);
+                    dateTimePicker.Location = new System.Drawing.Point(150, yPos);
+                    dateTimePicker.Width = 150;
+                    inputControl = dateTimePicker;
+                    inputControl.Name = column.ColumnName;
+                }
+                else if (column.DataType == typeof(bool))
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Checked = Convert.ToBoolean(currentRow[column]);
+                    checkBox.Location = new System.Drawing.Point(150, yPos);
+                    checkBox.Name = column.ColumnName;
+                    inputControl = checkBox;
+                }
+                else
+                {
+                    TextBox textBox = new TextBox();
+                    textBox.Text = currentRow[column].ToString();
+                    textBox.Location = new System.Drawing.Point(150, yPos);
+                    textBox.Width = 200;
+                    textBox.Name = column.ColumnName;
+                    inputControl = textBox;
+                }
+
+                panelEditor.Controls.Add(inputControl);
+                yPos += 30;
+            }
+
         }
 
-        private void btnPrevious_Click_1(object sender, EventArgs e)
+        private void btnPrevious_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0)
             {
@@ -304,6 +347,10 @@ namespace BD_UI
                 int idToDelete = Convert.ToInt32(currentRow["id"]);
                 try
                 {
+                    if (connection.State != ConnectionState.Open)
+                    {
+                        connection.Open();
+                    }
                     string deleteQuery = $"DELETE FROM `{tableName}` WHERE id = @idToDelete";
                     MySqlCommand deleteCmd = new MySqlCommand(deleteQuery, connection);
                     deleteCmd.Parameters.AddWithValue("@idToDelete", idToDelete);
@@ -313,7 +360,8 @@ namespace BD_UI
                     DeleteResult = 1;
                     currentIndex--;
                     LoadData(tableName, currentIndex);
-                    
+                    connection.Close();
+
 
                 }
                 catch (MySqlException ex)
@@ -335,6 +383,8 @@ namespace BD_UI
             {
                 try
                 {
+
+
                     foreach (Control control in panelEditor.Controls)
                     {
                         string columnName = control.Name;
@@ -413,7 +463,28 @@ namespace BD_UI
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
             await SaveChanges();
+            connection.Close();
+
+        }
+        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (connection.State == ConnectionState.Open)
+            {
+                connection.Close();
+            }
+        }
+
+        private void Editor_Load(object sender, EventArgs e)
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
         }
     }
 }

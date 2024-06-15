@@ -172,9 +172,20 @@ namespace BD_UI
         {
             Editor editor = new Editor(connection, cnx_str);
             editor.ShowDialog();
+            
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
-                LoadTableData(selectedTableName);
+                LoadTableData(selectedTableName);                
+            }
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
+            else
+            {
+                connection.Close();
+                connection.Open();
+
             }
 
         }
@@ -232,7 +243,20 @@ namespace BD_UI
             //var i = table_data.Rows[e.RowIndex].Selected = true;
             try
             {
-                int id =Convert.ToInt32(table_data.Rows[e.RowIndex].Cells[0].Value);
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+                else
+                {
+                    connection.Close();
+                    connection.Open();
+
+                }
+
+                DataGridViewRow row = table_data.Rows[e.RowIndex];
+
+                int id =Convert.ToInt32(row.Cells["id"].Value);
                 //MessageBox.Show(id.ToString());
                 Editor editor = new Editor(connection, cnx_str ,id , selectedTableName);
                 editor.ShowDialog();
