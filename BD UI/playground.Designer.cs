@@ -105,7 +105,7 @@
             // panel1
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            panel1.BackColor = SystemColors.MenuHighlight;
+            panel1.BackColor = SystemColors.GradientActiveCaption;
             panel1.Controls.Add(Menu);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(list_tables);
@@ -286,7 +286,7 @@
             tabPage5.Padding = new Padding(3);
             tabPage5.Size = new Size(804, 538);
             tabPage5.TabIndex = 2;
-            tabPage5.Text = "tabPage5";
+            tabPage5.Text = "Relation";
             tabPage5.UseVisualStyleBackColor = true;
             // 
             // Playground

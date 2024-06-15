@@ -19,7 +19,6 @@ namespace BD_UI
             this.add.Visible = false;
             LoadTables();
         }
-
         private async void LoadTables()
         {
             string query = "SHOW TABLES";
@@ -49,7 +48,6 @@ namespace BD_UI
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
         }
-
         private void list_tables_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (list_tables.SelectedItem != null)
@@ -67,7 +65,6 @@ namespace BD_UI
                 MessageBox.Show("Aucune table sélectionnée.", "Information");
             }
         }
-
         private void LoadTableData(string tableName)
         {
             try
@@ -92,12 +89,10 @@ namespace BD_UI
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
         }
-
         private void playground_Load(object sender, EventArgs e)
         {
 
         }
-
         private void table_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -151,7 +146,6 @@ namespace BD_UI
                 RelatedTables.Controls.Add(button);
             }
         }
-
         private void LoadRelatedTableData(string tableName)
         {
             try
@@ -174,13 +168,16 @@ namespace BD_UI
                 MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
             }
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             Editor editor = new Editor(connection, cnx_str);
             editor.ShowDialog();
-        }
+            if (editor.UpdateResult == 1 || editor.DeleteResult ==1)
+            {
+                LoadTableData(selectedTableName);
+            }
 
+        }
         private void add_Click(object sender, EventArgs e)
         {
             Add add = new Add(connection, selectedTableName);
@@ -190,10 +187,7 @@ namespace BD_UI
             {
                 LoadTableData(selectedTableName);
             }
-
-
         }
-
         private void LoadTableSchema(string tableName)
         {
             try
@@ -228,7 +222,6 @@ namespace BD_UI
         {
 
         }
-
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
