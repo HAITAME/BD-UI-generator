@@ -18,7 +18,6 @@ namespace BD_UI
         private DataRow currentRow;
         private DataTable dataTable;
         private int currentIndex = -1;
-        private System.Windows.Forms.Label lblIndex;
         public int DeleteResult { get; private set; }
         public int UpdateResult { get; private set; }
 
@@ -29,6 +28,7 @@ namespace BD_UI
             this.connectionString = connectionString;
             btnPrevious.Visible = false;
             btnNext.Visible = false;
+            this.FormClosing += new FormClosingEventHandler(Editor_Close);
             if (data_id != -1)
             {
                 if (connection.State != ConnectionState.Open)
@@ -52,15 +52,24 @@ namespace BD_UI
 
         }
 
+        private void Connecte()
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
+            else
+            {
+                connection.Close();
+                connection.Open();
+            }
+        }
         private async void LoadTables()
         {
             comboBoxTables.Items.Clear();
             try
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
+                Connecte();
                 DataTable schemaTable = connection.GetSchema("Tables");
                 foreach (DataRow row in schemaTable.Rows)
                 {
@@ -96,10 +105,7 @@ namespace BD_UI
         {
             try
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
+                Connecte();
                 string query = $"SELECT * FROM `{tableName}`";
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -211,17 +217,7 @@ namespace BD_UI
         {
             try
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
-                else
-                {
-                    connection.Close();
-                    connection.Open();
-
-
-                }
+                Connecte();
 
                 string query = $"SELECT * FROM `{tableName}` WHERE id = {id}";
                 DataTable OneRowdataTable = new DataTable();
@@ -347,10 +343,8 @@ namespace BD_UI
                 int idToDelete = Convert.ToInt32(currentRow["id"]);
                 try
                 {
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        connection.Open();
-                    }
+                    Connecte();
+
                     string deleteQuery = $"DELETE FROM `{tableName}` WHERE id = @idToDelete";
                     MySqlCommand deleteCmd = new MySqlCommand(deleteQuery, connection);
                     deleteCmd.Parameters.AddWithValue("@idToDelete", idToDelete);
@@ -384,6 +378,7 @@ namespace BD_UI
                 try
                 {
 
+                    Connecte();
 
                     foreach (Control control in panelEditor.Controls)
                     {
@@ -463,16 +458,15 @@ namespace BD_UI
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            if (connection.State != ConnectionState.Open)
-            {
-                connection.Open();
-            }
+            
             await SaveChanges();
             connection.Close();
 
         }
-        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        private void Editor_Close(object sender, FormClosingEventArgs e)
         {
+            //MessageBox.Show("Fermeture de l'éditeur");
+            
             if (connection.State == ConnectionState.Open)
             {
                 connection.Close();
@@ -481,10 +475,8 @@ namespace BD_UI
 
         private void Editor_Load(object sender, EventArgs e)
         {
-            if (connection.State != ConnectionState.Open)
-            {
-                connection.Open();
-            }
+            Connecte();
+            //MessageBox.Show("Chargement de l'éditeur");
         }
     }
 }

@@ -18,9 +18,23 @@ namespace BD_UI
             this.add.Enabled = false;
             this.add.Visible = false;
             LoadTables();
+        }       
+        private void Connecte()
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
+            else
+            {
+                connection.Close();
+                connection.Open();
+
+            }
         }
         private async void LoadTables()
         {
+            Connecte();
             string query = "SHOW TABLES";
             list_tables.Items.Clear();
 
@@ -69,6 +83,7 @@ namespace BD_UI
         {
             try
             {
+                Connecte();
                 using (MySqlConnection cnx = new MySqlConnection(cnx_str))
                 {
                     string query = $"SELECT * FROM `{tableName}`";
@@ -111,6 +126,7 @@ namespace BD_UI
 
             try
             {
+                Connecte();
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -177,16 +193,7 @@ namespace BD_UI
             {
                 LoadTableData(selectedTableName);                
             }
-            if (connection.State != ConnectionState.Open)
-            {
-                connection.Open();
-            }
-            else
-            {
-                connection.Close();
-                connection.Open();
-
-            }
+            
 
         }
         private void add_Click(object sender, EventArgs e)
@@ -243,19 +250,8 @@ namespace BD_UI
             //var i = table_data.Rows[e.RowIndex].Selected = true;
             try
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
-                else
-                {
-                    connection.Close();
-                    connection.Open();
-
-                }
-
+                Connecte();
                 DataGridViewRow row = table_data.Rows[e.RowIndex];
-
                 int id =Convert.ToInt32(row.Cells["id"].Value);
                 //MessageBox.Show(id.ToString());
                 Editor editor = new Editor(connection, cnx_str ,id , selectedTableName);
@@ -269,6 +265,7 @@ namespace BD_UI
             {
                 MessageBox.Show("Selectionner une ligne valide");
             }
+
 
         }
     }
