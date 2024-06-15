@@ -230,14 +230,20 @@ namespace BD_UI
         private void table_data_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             //var i = table_data.Rows[e.RowIndex].Selected = true;
-            int id =Convert.ToInt32(table_data.Rows[e.RowIndex].Cells[0].Value);
-            //MessageBox.Show(id.ToString());
-            Editor editor = new Editor(connection, cnx_str ,id , selectedTableName);
-            editor.ShowDialog();
-            MessageBox.Show(id.ToString());
-            if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
+            try
             {
-                LoadTableData(selectedTableName);
+                int id =Convert.ToInt32(table_data.Rows[e.RowIndex].Cells[0].Value);
+                //MessageBox.Show(id.ToString());
+                Editor editor = new Editor(connection, cnx_str ,id , selectedTableName);
+                editor.ShowDialog();
+                //MessageBox.Show(id.ToString());
+                if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
+                {
+                    LoadTableData(selectedTableName);
+                }
+            }catch
+            {
+                MessageBox.Show("Selectionner une ligne valide");
             }
 
         }

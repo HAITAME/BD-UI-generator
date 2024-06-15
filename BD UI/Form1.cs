@@ -83,10 +83,14 @@ namespace BD_UI
             try
             {
                 string query = $"SELECT * FROM `{tableName}`";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                dataTable = new DataTable();
-                await Task.Run(() => adapter.Fill(dataTable));
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    { 
+                        dataTable = new DataTable();
+                        await Task.Run(() => adapter.Fill(dataTable));
+                    }
+                }
                 currentIndex = index;
                 DisplayRow(currentIndex);
             }
