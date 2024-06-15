@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            RelatedTable = new Panel();
+            LoginPanel = new Panel();
             checkBox1 = new CheckBox();
             logbutton = new Button();
             input_database = new TextBox();
@@ -40,29 +40,29 @@
             input_host = new TextBox();
             Host_label = new Label();
             pictureBox1 = new PictureBox();
-            RelatedTable.SuspendLayout();
+            LoginPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // RelatedTable
+            // LoginPanel
             // 
-            RelatedTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            RelatedTable.BackColor = SystemColors.Control;
-            RelatedTable.Controls.Add(checkBox1);
-            RelatedTable.Controls.Add(logbutton);
-            RelatedTable.Controls.Add(input_database);
-            RelatedTable.Controls.Add(label1);
-            RelatedTable.Controls.Add(input_password);
-            RelatedTable.Controls.Add(password_label);
-            RelatedTable.Controls.Add(input_username);
-            RelatedTable.Controls.Add(UserLabel);
-            RelatedTable.Controls.Add(input_host);
-            RelatedTable.Controls.Add(Host_label);
-            RelatedTable.Location = new Point(351, -1);
-            RelatedTable.Name = "RelatedTable";
-            RelatedTable.Size = new Size(471, 457);
-            RelatedTable.TabIndex = 0;
-            RelatedTable.Paint += panel1_Paint;
+            LoginPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LoginPanel.BackColor = SystemColors.Control;
+            LoginPanel.Controls.Add(checkBox1);
+            LoginPanel.Controls.Add(logbutton);
+            LoginPanel.Controls.Add(input_database);
+            LoginPanel.Controls.Add(label1);
+            LoginPanel.Controls.Add(input_password);
+            LoginPanel.Controls.Add(password_label);
+            LoginPanel.Controls.Add(input_username);
+            LoginPanel.Controls.Add(UserLabel);
+            LoginPanel.Controls.Add(input_host);
+            LoginPanel.Controls.Add(Host_label);
+            LoginPanel.Location = new Point(351, -1);
+            LoginPanel.Name = "LoginPanel";
+            LoginPanel.Size = new Size(471, 457);
+            LoginPanel.TabIndex = 0;
+            LoginPanel.Paint += panel1_Paint;
             // 
             // checkBox1
             // 
@@ -169,20 +169,19 @@
             BackColor = SystemColors.HotTrack;
             ClientSize = new Size(822, 456);
             Controls.Add(pictureBox1);
-            Controls.Add(RelatedTable);
+            Controls.Add(LoginPanel);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             Load += login_Load;
-            RelatedTable.ResumeLayout(false);
-            RelatedTable.PerformLayout();
+            LoginPanel.ResumeLayout(false);
+            LoginPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panel1;
         private Label Host_label;
         private TextBox input_password;
         private Label password_label;
@@ -192,7 +191,7 @@
         private TextBox input_database;
         private Label label1;
         private Button logbutton;
-        private Panel RelatedTable;
+        private Panel LoginPanel;
         private CheckBox checkBox1;
         private PictureBox pictureBox1;
     }
