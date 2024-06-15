@@ -39,12 +39,14 @@
             UserLabel = new Label();
             input_host = new TextBox();
             Host_label = new Label();
+            pictureBox1 = new PictureBox();
             RelatedTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // RelatedTable
             // 
-            RelatedTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            RelatedTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             RelatedTable.BackColor = SystemColors.Control;
             RelatedTable.Controls.Add(checkBox1);
             RelatedTable.Controls.Add(logbutton);
@@ -65,7 +67,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(307, 249);
+            checkBox1.Location = new Point(303, 247);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(83, 24);
             checkBox1.TabIndex = 10;
@@ -85,7 +87,7 @@
             // 
             // input_database
             // 
-            input_database.Location = new Point(62, 328);
+            input_database.Location = new Point(62, 330);
             input_database.Name = "input_database";
             input_database.Size = new Size(225, 27);
             input_database.TabIndex = 8;
@@ -93,7 +95,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(62, 295);
+            label1.Location = new Point(62, 291);
             label1.Name = "label1";
             label1.Size = new Size(195, 20);
             label1.TabIndex = 7;
@@ -101,7 +103,7 @@
             // 
             // input_password
             // 
-            input_password.Location = new Point(62, 249);
+            input_password.Location = new Point(62, 245);
             input_password.Name = "input_password";
             input_password.Size = new Size(225, 27);
             input_password.TabIndex = 5;
@@ -110,7 +112,7 @@
             // password_label
             // 
             password_label.AutoSize = true;
-            password_label.Location = new Point(62, 216);
+            password_label.Location = new Point(62, 206);
             password_label.Name = "password_label";
             password_label.Size = new Size(98, 20);
             password_label.TabIndex = 4;
@@ -118,7 +120,7 @@
             // 
             // input_username
             // 
-            input_username.Location = new Point(62, 157);
+            input_username.Location = new Point(62, 160);
             input_username.Name = "input_username";
             input_username.Size = new Size(225, 27);
             input_username.TabIndex = 3;
@@ -127,7 +129,7 @@
             // UserLabel
             // 
             UserLabel.AutoSize = true;
-            UserLabel.Location = new Point(62, 124);
+            UserLabel.Location = new Point(62, 121);
             UserLabel.Name = "UserLabel";
             UserLabel.Size = new Size(76, 20);
             UserLabel.TabIndex = 2;
@@ -135,7 +137,7 @@
             // 
             // input_host
             // 
-            input_host.Location = new Point(62, 65);
+            input_host.Location = new Point(62, 75);
             input_host.Name = "input_host";
             input_host.Size = new Size(225, 27);
             input_host.TabIndex = 1;
@@ -144,12 +146,21 @@
             // Host_label
             // 
             Host_label.AutoSize = true;
-            Host_label.Location = new Point(62, 32);
+            Host_label.Location = new Point(62, 36);
             Host_label.Name = "Host_label";
             Host_label.Size = new Size(141, 20);
             Host_label.TabIndex = 0;
             Host_label.Text = "Nom ou IP de l'hôte";
             Host_label.Click += label1_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.login;
+            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(312, 413);
+            pictureBox1.TabIndex = 1;
+            pictureBox1.TabStop = false;
             // 
             // Login
             // 
@@ -157,6 +168,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.HotTrack;
             ClientSize = new Size(822, 456);
+            Controls.Add(pictureBox1);
             Controls.Add(RelatedTable);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
@@ -164,6 +176,7 @@
             Load += login_Load;
             RelatedTable.ResumeLayout(false);
             RelatedTable.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -181,5 +194,6 @@
         private Button logbutton;
         private Panel RelatedTable;
         private CheckBox checkBox1;
+        private PictureBox pictureBox1;
     }
 }
