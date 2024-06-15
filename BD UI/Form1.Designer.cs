@@ -128,7 +128,8 @@
             Controls.Add(panelEditor);
             Controls.Add(panel1);
             Name = "Editor";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Editeur";
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();

@@ -89,7 +89,6 @@ namespace BD_UI
 
         private void DisplayRow(int index)
         {
-            // Affichage de l'index actuel
             // lblIndex.Text = $"Index: {currentIndex}";
 
             if (dataTable != null && dataTable.Rows.Count > 0 && index >= 0 && index < dataTable.Rows.Count)
@@ -97,25 +96,33 @@ namespace BD_UI
                 currentRow = dataTable.Rows[index];
                 panelEditor.Controls.Clear();
 
-                // Afficher chaque colonne dans le panel avec des contrôles de saisie pour l'édition
                 int yPos = 10;
                 foreach (DataColumn column in dataTable.Columns)
                 {
-                    Label label = new Label();
-                    label.Text = $"{column.ColumnName}:";
-                    label.AutoSize = true;
-                    label.Location = new System.Drawing.Point(10, yPos);
-                    panelEditor.Controls.Add(label);
+                    Label labe_id = new Label();
+                    labe_id.Text = $"{column.ColumnName}:";
+                    labe_id.AutoSize = true;
+                    labe_id.Location = new System.Drawing.Point(10, yPos);
+                    panelEditor.Controls.Add(labe_id);
 
-                    // Ajouter un contrôle de saisie correspondant au type de données
                     Control inputControl = null;
+                    if(column.ColumnName == "id")
+                    {
+                        Label label = new Label();
+                        label.Text = currentRow[column].ToString();
+                        label.Location = new System.Drawing.Point(150, yPos);
+                        label.Width = 100;
+                        label.Name = column.ColumnName;
+                        inputControl = label;
 
-                    if (column.DataType == typeof(int))
+                    }
+                    else if (column.DataType == typeof(int))
                     {
                         NumericUpDown numericUpDown = new NumericUpDown();
                         numericUpDown.Value = Convert.ToInt32(currentRow[column]);
                         numericUpDown.Location = new System.Drawing.Point(150, yPos);
                         numericUpDown.Width = 100;
+                        numericUpDown.Name = column.ColumnName;
                         inputControl = numericUpDown;
                     }
                     else if (column.DataType == typeof(string))
@@ -124,6 +131,7 @@ namespace BD_UI
                         textBox.Text = currentRow[column].ToString();
                         textBox.Location = new System.Drawing.Point(150, yPos);
                         textBox.Width = 200;
+                        textBox.Name = column.ColumnName;
                         inputControl = textBox;
                     }
                     else if (column.DataType == typeof(DateTime))
@@ -133,21 +141,23 @@ namespace BD_UI
                         dateTimePicker.Location = new System.Drawing.Point(150, yPos);
                         dateTimePicker.Width = 150;
                         inputControl = dateTimePicker;
+                        inputControl.Name = column.ColumnName;
                     }
                     else if (column.DataType == typeof(bool))
                     {
                         CheckBox checkBox = new CheckBox();
                         checkBox.Checked = Convert.ToBoolean(currentRow[column]);
                         checkBox.Location = new System.Drawing.Point(150, yPos);
+                        checkBox.Name = column.ColumnName;
                         inputControl = checkBox;
                     }
                     else
                     {
-                        // Gérer d'autres types de données selon vos besoins
                         TextBox textBox = new TextBox();
                         textBox.Text = currentRow[column].ToString();
                         textBox.Location = new System.Drawing.Point(150, yPos);
                         textBox.Width = 200;
+                        textBox.Name = column.ColumnName;
                         inputControl = textBox;
                     }
 
@@ -156,8 +166,6 @@ namespace BD_UI
                 }
             }
         }
-
-
         private void btnPrevious_Click_1(object sender, EventArgs e)
         {
             if (currentIndex > 0)
@@ -211,50 +219,81 @@ namespace BD_UI
             {
                 try
                 {
+                    // Mettre à jour les valeurs de currentRow à partir des contrôles du panel
+                    foreach (Control control in panelEditor.Controls)
+                    {
+                        string columnName = control.Name; // Utiliser le nom du contrôle comme nom de colonne
+
+                        if (control is TextBox textBox)
+                        {
+                            currentRow[columnName] = textBox.Text;
+                        }
+                        else if (control is NumericUpDown numericUpDown)
+                        {
+                            currentRow[columnName] = (int)numericUpDown.Value;
+                        }
+                        else if (control is DateTimePicker dateTimePicker)
+                        {
+                            currentRow[columnName] = dateTimePicker.Value;
+                        }
+                        else if (control is CheckBox checkBox)
+                        {
+                            currentRow[columnName] = checkBox.Checked;
+                        }
+                    }
+
                     // Construction de la requête UPDATE dynamique
                     StringBuilder updateQuery = new StringBuilder($"UPDATE `{tableName}` SET ");
                     List<MySqlParameter> parameters = new List<MySqlParameter>();
 
-                    int ID;
                     // Itérer sur les colonnes de la table
                     foreach (DataColumn column in dataTable.Columns)
                     {
                         // Exclure la clé primaire (si connue) ou d'autres colonnes spécifiques si nécessaire
-                        if (column.ColumnName != "id") // Exemple d'exclusion de la colonne ID
+                        if (column.ColumnName.ToLower() != "id") // Exemple d'exclusion de la colonne ID
                         {
                             updateQuery.Append($"`{column.ColumnName}` = @{column.ColumnName}, ");
 
                             // Vérifier si le paramètre existe déjà dans la collection
-                            if (!parameters.Any(p => p.ParameterName == $"@{column.ColumnName}"))
+                            MySqlParameter existingParameter = parameters.FirstOrDefault(p => p.ParameterName == $"@{column.ColumnName}");
+                            if (existingParameter != null)
                             {
-                                parameters.Add(new MySqlParameter($"@{column.ColumnName}", currentRow[column]));
+                                // Mettre à jour la valeur du paramètre existant
+                                existingParameter.Value = currentRow[column];
                             }
                             else
                             {
-                                // Remplacer le paramètre existant
-                                parameters.First(p => p.ParameterName == $"@{column.ColumnName}").Value = currentRow[column];
+                                // Ajouter un nouveau paramètre
+                                parameters.Add(new MySqlParameter($"@{column.ColumnName}", currentRow[column]));
                             }
                         }
-
                     }
-                    updateQuery.Remove(updateQuery.Length - 2, 2);
-                    updateQuery.Append($" WHERE id = @ID"); 
 
-                    if (!parameters.Any(p => p.ParameterName == "@ID"))
+                    // Supprimer la virgule et l'espace après la dernière colonne mise à jour
+                    if (updateQuery.Length > 0)
                     {
-                        parameters.Add(new MySqlParameter("@ID", currentRow["id"])); 
-                    }
-                    else
-                    {
-                        parameters.First(p => p.ParameterName == "@ID").Value = currentRow["id"];
+                        updateQuery.Remove(updateQuery.Length - 2, 2); // Supprime ", " à la fin
                     }
 
+                    // Ajouter la clause WHERE pour la clé primaire (ID)
+                    updateQuery.Append($" WHERE `id` = @ID");
+                    parameters.Add(new MySqlParameter("@ID", currentRow["id"])); // Assurez-vous que le nom de colonne clé primaire est correct
+
+                    // Afficher la requête construite avec les valeurs des paramètres dans un MessageBox pour le débogage
+                    StringBuilder debugQuery = new StringBuilder(updateQuery.ToString());
+                    foreach (var param in parameters)
+                    {
+                        debugQuery.Replace(param.ParameterName, param.Value.ToString());
+                    }
+                    //MessageBox.Show(debugQuery.ToString(), "Requête SQL avec valeurs");
+
+                    // Création et exécution de la commande
                     using (MySqlCommand updateCmd = new MySqlCommand(updateQuery.ToString(), connection))
                     {
                         updateCmd.Parameters.AddRange(parameters.ToArray());
                         await updateCmd.ExecuteNonQueryAsync();
                     }
-
+                    //MessageBox.Show(updateQuery.ToString(), "Requête SQL");
                     MessageBox.Show("Les modifications ont été enregistrées avec succès.", "Sauvegarde réussie", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (MySqlException ex)
@@ -271,9 +310,6 @@ namespace BD_UI
                 MessageBox.Show("Aucune ligne sélectionnée pour la sauvegarde.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             SaveChanges(); 

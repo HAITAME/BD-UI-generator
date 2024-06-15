@@ -147,6 +147,7 @@
             ClientSize = new Size(822, 456);
             Controls.Add(RelatedTable);
             Name = "Login";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             Load += login_Load;
             RelatedTable.ResumeLayout(false);

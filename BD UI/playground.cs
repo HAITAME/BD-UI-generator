@@ -9,12 +9,14 @@ namespace BD_UI
     {
         private MySqlConnection connection;
         private string cnx_str;
+        string selectedTableName;
 
         public Playground(MySqlConnection connection, string cnx_str)
         {
             InitializeComponent();
             this.connection = connection;
             this.cnx_str = cnx_str;
+            this.add.Enabled = false;
             LoadTables();
         }
 
@@ -52,8 +54,12 @@ namespace BD_UI
         {
             if (list_tables.SelectedItem != null)
             {
-                string selectedTableName = list_tables.SelectedItem.ToString();
+                selectedTableName = list_tables.SelectedItem.ToString();
                 LoadTableData(selectedTableName);
+                LoadTableSchema(selectedTableName);
+
+                this.add.Enabled = true;
+
             }
             else
             {
@@ -134,16 +140,13 @@ namespace BD_UI
             {
                 string relatedTableName = row["Table liée"].ToString();
 
-                // Créer un bouton pour afficher le nom de la table liée
                 Button button = new Button();
                 button.Text = relatedTableName;
                 button.Click += (sender, e) =>
                 {
-                    // Action à effectuer lors du clic sur le bouton (par exemple, afficher les données de la table liée)
                     LoadRelatedTableData(relatedTableName);
                 };
 
-                // Ajouter le bouton au FlowLayoutPanel
                 RelatedTables.Controls.Add(button);
             }
         }
@@ -158,7 +161,7 @@ namespace BD_UI
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, cnx);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
-                    RelatedTableData.DataSource = dt; // Assurez-vous que dataGridViewRelatedTableData est lié uniquement à dt
+                    RelatedTableData.DataSource = dt;
                 }
             }
             catch (MySqlException ex)
@@ -173,8 +176,50 @@ namespace BD_UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Editor editor = new Editor(connection ,cnx_str);
+            Editor editor = new Editor(connection, cnx_str);
             editor.ShowDialog();
+        }
+
+        private void add_Click(object sender, EventArgs e)
+        {
+            Add add = new Add(connection, selectedTableName);
+            add.ShowDialog();
+
+        }
+
+        private void LoadTableSchema(string tableName)
+        {
+            try
+            {
+                using (MySqlConnection cnx = new MySqlConnection(cnx_str))
+                {
+                    string query = $"DESCRIBE`{tableName}`";
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, cnx);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    ViewStructure.DataSource = dt;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+        }
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void RelatedTables_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void RelatedTables_Paint_1(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
