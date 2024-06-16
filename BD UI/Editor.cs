@@ -121,7 +121,44 @@ namespace BD_UI
 
                 if (dataTable.Rows.Count == 0)
                 {
+                    // Nettoyer le panelEditor s'il contient des contrôles
                     panelEditor.Controls.Clear();
+
+                    // Créer un TableLayoutPanel pour organiser les contrôles
+                    TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
+                    tableLayoutPanel.Dock = DockStyle.Fill;
+                    tableLayoutPanel.RowCount = 2;
+                    tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+                    tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+
+                    Label lblMessage = new Label();
+                    lblMessage.Text = $"La table '{tableName}' est vide.";
+                    lblMessage.AutoSize = true;
+                    lblMessage.Anchor = AnchorStyles.None; 
+                    tableLayoutPanel.Controls.Add(lblMessage, 0, 0);
+
+                    Button btnAjouter = new Button();
+                    btnAjouter.Text = "Ajouter des données";
+                    btnAjouter.Anchor = AnchorStyles.None;
+                    btnAjouter.Size = new Size(200, 30); 
+                    btnAjouter.Font = new Font("Arial", 9, FontStyle.Bold);
+                    btnAjouter.Click += (sender, e) =>
+                    {
+                        MessageBox.Show(tableName);
+                        Add add = new Add(connection, tableName);
+                        add.ShowDialog();
+                        int r = add.InsertResult;
+                        if (r == 1)
+                        {
+                            LoadData(tableName);
+
+                           
+                        }
+                    };
+                    tableLayoutPanel.Controls.Add(btnAjouter, 0, 1);
+
+                    panelEditor.Controls.Add(tableLayoutPanel);
+
                     return;
                 }
                 currentIndex = index;

@@ -21,13 +21,34 @@ namespace BD_UI
             LoadTableSchema();
             CreateFormControls();
         }
+        private void Connecte()
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
+            else
+            {
+                connection.Close();
+                connection.Open();
+            }
+        }
+        private void Disconnect()
+        {
+            if (connection.State != ConnectionState.Closed)
+            {
+                connection.Close();
+            }
+        }
 
         private void LoadTableSchema()
         {
+            Connecte();
             string query = $"DESCRIBE {tableName}";
             MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
             dataTable = new DataTable();
             adapter.Fill(dataTable);
+            Disconnect();
         }
 
         private void CreateFormControls()
@@ -132,6 +153,7 @@ namespace BD_UI
         {
             try
             {
+                Connecte();
                 string insertQuery = $"INSERT INTO {tableName} (";
                 string valuesQuery = "VALUES (";
 
@@ -183,6 +205,7 @@ namespace BD_UI
 
                 MessageBox.Show("Data inserted successfully!");
                 InsertResult = 1;
+                Disconnect();
             }
             catch (Exception ex)
             {
