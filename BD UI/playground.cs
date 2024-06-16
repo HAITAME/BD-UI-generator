@@ -45,7 +45,6 @@ namespace BD_UI
             Connecte();
             string query = "SHOW TABLES";
             list_tables.Items.Clear();
-
             try
             {
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
