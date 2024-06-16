@@ -113,7 +113,7 @@ namespace BD_UI
                     }
                 }
                 else
-                {   
+                {
                     MainTab.SelectedTab = Parcourir;
                     MainTab.TabPages.Remove(Relation);
                     ClearRelatedTableData();
