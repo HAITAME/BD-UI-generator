@@ -18,6 +18,11 @@ namespace BD_UI
             this.cnx_str = cnx_str;
             this.add.Enabled = false;
             this.add.Visible = false;
+            MainTab.TabPages.Remove(Relation);
+            MainTab.TabPages.Remove(Parcourir);
+            MainTab.TabPages.Remove(Structure);
+
+
             LoadTables();
         }
         private void Connecte()
@@ -78,11 +83,21 @@ namespace BD_UI
             if (list_tables.SelectedItem != null)
             {
                 //ClearRelatedTableData();
+                ClearRelatedTableData();
+
                 selectedTableName = list_tables.SelectedItem.ToString();
                 LoadTableData(selectedTableName);
                 LoadTableSchema(selectedTableName);
                 this.add.Enabled = true;
                 this.add.Visible = true;
+                if (!MainTab.TabPages.Contains(Parcourir))
+                {
+                    MainTab.TabPages.Add(Parcourir);
+                }
+                if (!MainTab.TabPages.Contains(Structure))
+                {
+                    MainTab.TabPages.Add(Structure);
+                }
 
             }
             else
