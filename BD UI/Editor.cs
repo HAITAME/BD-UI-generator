@@ -97,10 +97,7 @@ namespace BD_UI
             {
                 tableName = comboBoxTables.SelectedItem.ToString();
                 LoadData(tableName);
-                btnPrevious.Visible = true;
-                btnNext.Visible = true;
-                btnDelete.Visible = true;
-                btnSave.Visible = true;
+                
             }
         }
 
@@ -115,16 +112,16 @@ namespace BD_UI
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                     {
                         dataTable = new DataTable();
-                        await Task.Run(() => adapter.Fill(dataTable));
+                        //await Task.Run(() => adapter.Fill(dataTable));
+                        await adapter.FillAsync(dataTable);
+
                     }
                 }
 
                 if (dataTable.Rows.Count == 0)
                 {
-                    // Nettoyer le panelEditor s'il contient des contrôles
                     panelEditor.Controls.Clear();
 
-                    // Créer un TableLayoutPanel pour organiser les contrôles
                     TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                     tableLayoutPanel.Dock = DockStyle.Fill;
                     tableLayoutPanel.RowCount = 2;
@@ -164,6 +161,10 @@ namespace BD_UI
                 currentIndex = index;
                 DisplayRow(currentIndex);
                 connection.Close();
+                btnPrevious.Visible = true;
+                btnNext.Visible = true;
+                btnDelete.Visible = true;
+                btnSave.Visible = true;
             }
             catch (MySqlException ex)
             {
