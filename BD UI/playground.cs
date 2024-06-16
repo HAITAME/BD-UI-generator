@@ -10,7 +10,7 @@ namespace BD_UI
         private MySqlConnection connection;
         private string cnx_str;
         string selectedTableName;
-        string RelatedTableName;
+        string RelatedTable_Name;
         public Playground(MySqlConnection connection, string cnx_str)
         {
             InitializeComponent();
@@ -174,7 +174,7 @@ namespace BD_UI
 
                 Button button = new Button();
                 button.Text = relatedTableName;
-                RelatedTableName = relatedTableName;
+                RelatedTable_Name = relatedTableName;
                 button.Click += (sender, e) =>
                 {
                     LoadRelatedTableData(relatedTableName);
@@ -311,11 +311,11 @@ namespace BD_UI
                 Connecte();
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
                 int id =Convert.ToInt32(row.Cells["id"].Value);
-                Editor editor = new Editor(connection, cnx_str ,id , RelatedTableName);
+                Editor editor = new Editor(connection, cnx_str ,id , RelatedTable_Name);
                 editor.ShowDialog();
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {
-                    LoadTableData(RelatedTableName);
+                    LoadTableData(RelatedTable_Name);
                 }
             }catch
             {
