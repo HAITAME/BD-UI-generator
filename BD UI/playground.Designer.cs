@@ -39,28 +39,25 @@
             label2 = new Label();
             panel5 = new Panel();
             tabControl2 = new TabControl();
-            tabPage3 = new TabPage();
-            tabPage4 = new TabPage();
             label3 = new Label();
             dataGridView1 = new DataGridView();
             table_data = new DataGridView();
-            Liste = new TabControl();
-            tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
+            MainTab = new TabControl();
+            Parcourir = new TabPage();
+            Structure = new TabPage();
             ViewStructure = new DataGridView();
-            tabPage5 = new TabPage();
+            Relation = new TabPage();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel5.SuspendLayout();
-            tabControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)table_data).BeginInit();
-            Liste.SuspendLayout();
-            tabPage1.SuspendLayout();
-            tabPage2.SuspendLayout();
+            MainTab.SuspendLayout();
+            Parcourir.SuspendLayout();
+            Structure.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ViewStructure).BeginInit();
-            tabPage5.SuspendLayout();
+            Relation.SuspendLayout();
             SuspendLayout();
             // 
             // list_tables
@@ -168,33 +165,11 @@
             // 
             // tabControl2
             // 
-            tabControl2.Controls.Add(tabPage3);
-            tabControl2.Controls.Add(tabPage4);
             tabControl2.Location = new Point(159, 9);
             tabControl2.Name = "tabControl2";
             tabControl2.SelectedIndex = 0;
             tabControl2.Size = new Size(250, 125);
             tabControl2.TabIndex = 11;
-            // 
-            // tabPage3
-            // 
-            tabPage3.Location = new Point(4, 29);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(242, 92);
-            tabPage3.TabIndex = 0;
-            tabPage3.Text = "tabPage3";
-            tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            tabPage4.Location = new Point(4, 29);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(242, 92);
-            tabPage4.TabIndex = 1;
-            tabPage4.Text = "tabPage4";
-            tabPage4.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -231,40 +206,40 @@
             table_data.TabIndex = 5;
             table_data.CellContentClick += table_data_CellContentClick_1;
             // 
-            // Liste
+            // MainTab
             // 
-            Liste.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            Liste.Controls.Add(tabPage1);
-            Liste.Controls.Add(tabPage2);
-            Liste.Controls.Add(tabPage5);
-            Liste.Location = new Point(171, 4);
-            Liste.Name = "Liste";
-            Liste.SelectedIndex = 0;
-            Liste.Size = new Size(812, 571);
-            Liste.SizeMode = TabSizeMode.FillToRight;
-            Liste.TabIndex = 15;
+            MainTab.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            MainTab.Controls.Add(Parcourir);
+            MainTab.Controls.Add(Structure);
+            MainTab.Controls.Add(Relation);
+            MainTab.Location = new Point(171, 4);
+            MainTab.Name = "MainTab";
+            MainTab.SelectedIndex = 0;
+            MainTab.Size = new Size(812, 571);
+            MainTab.SizeMode = TabSizeMode.FillToRight;
+            MainTab.TabIndex = 15;
             // 
-            // tabPage1
+            // Parcourir
             // 
-            tabPage1.Controls.Add(table_data);
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(804, 538);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "Parcourir";
-            tabPage1.UseVisualStyleBackColor = true;
+            Parcourir.Controls.Add(table_data);
+            Parcourir.Location = new Point(4, 29);
+            Parcourir.Name = "Parcourir";
+            Parcourir.Padding = new Padding(3);
+            Parcourir.Size = new Size(804, 538);
+            Parcourir.TabIndex = 0;
+            Parcourir.Text = "Parcourir";
+            Parcourir.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // Structure
             // 
-            tabPage2.Controls.Add(ViewStructure);
-            tabPage2.Location = new Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(804, 538);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Structure";
-            tabPage2.UseVisualStyleBackColor = true;
+            Structure.Controls.Add(ViewStructure);
+            Structure.Location = new Point(4, 29);
+            Structure.Name = "Structure";
+            Structure.Padding = new Padding(3);
+            Structure.Size = new Size(804, 538);
+            Structure.TabIndex = 1;
+            Structure.Text = "Structure";
+            Structure.UseVisualStyleBackColor = true;
             // 
             // ViewStructure
             // 
@@ -279,24 +254,24 @@
             ViewStructure.Size = new Size(790, 527);
             ViewStructure.TabIndex = 6;
             // 
-            // tabPage5
+            // Relation
             // 
-            tabPage5.Controls.Add(RelatedTableData);
-            tabPage5.Controls.Add(RelatedTables);
-            tabPage5.Location = new Point(4, 29);
-            tabPage5.Name = "tabPage5";
-            tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(804, 538);
-            tabPage5.TabIndex = 2;
-            tabPage5.Text = "Relation";
-            tabPage5.UseVisualStyleBackColor = true;
+            Relation.Controls.Add(RelatedTableData);
+            Relation.Controls.Add(RelatedTables);
+            Relation.Location = new Point(4, 29);
+            Relation.Name = "Relation";
+            Relation.Padding = new Padding(3);
+            Relation.Size = new Size(804, 538);
+            Relation.TabIndex = 2;
+            Relation.Text = "Relation";
+            Relation.UseVisualStyleBackColor = true;
             // 
             // Playground
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(983, 574);
-            Controls.Add(Liste);
+            Controls.Add(MainTab);
             Controls.Add(panel1);
             Name = "Playground";
             StartPosition = FormStartPosition.CenterScreen;
@@ -309,14 +284,13 @@
             panel3.PerformLayout();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
-            tabControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)table_data).EndInit();
-            Liste.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage2.ResumeLayout(false);
+            MainTab.ResumeLayout(false);
+            Parcourir.ResumeLayout(false);
+            Structure.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ViewStructure).EndInit();
-            tabPage5.ResumeLayout(false);
+            Relation.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -332,15 +306,14 @@
         private Button add;
         private Panel panel5;
         private TabControl tabControl2;
-        private TabPage tabPage3;
-        private TabPage tabPage4;
+       
         private Label label3;
         private DataGridView dataGridView1;
         private DataGridView table_data;
-        private TabControl Liste;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private TabControl MainTab;
+        private TabPage Parcourir;
+        private TabPage Structure;
         private DataGridView ViewStructure;
-        private TabPage tabPage5;
+        private TabPage Relation;
     }
 }

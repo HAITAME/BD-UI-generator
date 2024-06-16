@@ -78,10 +78,10 @@ namespace BD_UI
         {
             if (list_tables.SelectedItem != null)
             {
+                //ClearRelatedTableData();
                 selectedTableName = list_tables.SelectedItem.ToString();
                 LoadTableData(selectedTableName);
                 LoadTableSchema(selectedTableName);
-
                 this.add.Enabled = true;
                 this.add.Visible = true;
 
@@ -105,7 +105,20 @@ namespace BD_UI
                     table_data.DataSource = dt;
                 }
                 DataTable relatedTables = GetRelatedTables(tableName);
-                DisplayRelatedTables(relatedTables);
+                if (relatedTables.Rows.Count > 0)
+                {
+                    DisplayRelatedTables(relatedTables);
+                    if (!MainTab.TabPages.Contains(Relation))
+                    {
+                        MainTab.TabPages.Add(Relation);
+                    }
+                }
+                else
+                {   
+                    MainTab.SelectedTab = Parcourir;
+                    MainTab.TabPages.Remove(Relation);
+                    ClearRelatedTableData();
+                }
             }
             catch (MySqlException ex)
             {
@@ -273,7 +286,6 @@ namespace BD_UI
         {
 
         }
-
         private void table_data_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             //var i = table_data.Rows[e.RowIndex].Selected = true;
@@ -303,10 +315,9 @@ namespace BD_UI
 
 
         }
-
         private void RelatedTableData_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-               try
+            try
             {
                 Connecte();
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
@@ -324,8 +335,12 @@ namespace BD_UI
             finally {
                 Disconnect();
             }
-
-
+        }        
+        private void ClearRelatedTableData()
+        {
+            RelatedTables.Controls.Clear();
+            RelatedTableData.DataSource = null;
         }
+        
     }
 }
