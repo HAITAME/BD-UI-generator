@@ -10,6 +10,7 @@ namespace BD_UI
         private MySqlConnection connection;
         private string cnx_str;
         string selectedTableName;
+        string RelatedTableName;
         public Playground(MySqlConnection connection, string cnx_str)
         {
             InitializeComponent();
@@ -18,7 +19,7 @@ namespace BD_UI
             this.add.Enabled = false;
             this.add.Visible = false;
             LoadTables();
-        }       
+        }
         private void Connecte()
         {
             if (connection.State != ConnectionState.Open)
@@ -173,6 +174,7 @@ namespace BD_UI
 
                 Button button = new Button();
                 button.Text = relatedTableName;
+                RelatedTableName = relatedTableName;
                 button.Click += (sender, e) =>
                 {
                     LoadRelatedTableData(relatedTableName);
@@ -211,11 +213,11 @@ namespace BD_UI
         private void button1_Click(object sender, EventArgs e)
         {
             Editor editor = new Editor(connection, cnx_str);
-            editor.ShowDialog();           
+            editor.ShowDialog();
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
                 Disconnect();
-                LoadTableData(selectedTableName);                
+                LoadTableData(selectedTableName);
             }
         }
         private void add_Click(object sender, EventArgs e)
@@ -279,14 +281,41 @@ namespace BD_UI
             {
                 Connecte();
                 DataGridViewRow row = table_data.Rows[e.RowIndex];
-                int id =Convert.ToInt32(row.Cells["id"].Value);
+                int id = Convert.ToInt32(row.Cells["id"].Value);
                 //MessageBox.Show(id.ToString());
-                Editor editor = new Editor(connection, cnx_str ,id , selectedTableName);
+                Editor editor = new Editor(connection, cnx_str, id, selectedTableName);
                 editor.ShowDialog();
                 //MessageBox.Show(id.ToString());
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {
                     LoadTableData(selectedTableName);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Selectionner une ligne valide");
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+
+
+        }
+
+        private void RelatedTableData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+               try
+            {
+                Connecte();
+                DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
+                int id =Convert.ToInt32(row.Cells["id"].Value);
+                Editor editor = new Editor(connection, cnx_str ,id , RelatedTableName);
+                editor.ShowDialog();
+                if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
+                {
+                    LoadTableData(RelatedTableName);
                 }
             }catch
             {
@@ -295,7 +324,6 @@ namespace BD_UI
             finally {
                 Disconnect();
             }
-
 
 
         }

@@ -82,6 +82,7 @@
             RelatedTableData.RowHeadersWidth = 51;
             RelatedTableData.Size = new Size(784, 470);
             RelatedTableData.TabIndex = 6;
+            RelatedTableData.CellContentClick += RelatedTableData_CellContentClick;
             // 
             // RelatedTables
             // 
