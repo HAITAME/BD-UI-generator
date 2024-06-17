@@ -52,6 +52,7 @@
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
             exporterLesDonnéesToolStripMenuItem = new ToolStripMenuItem();
             excelToolStripMenuItem = new ToolStripMenuItem();
+            cSVToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -298,7 +299,7 @@
             // 
             // exporterLesDonnéesToolStripMenuItem
             // 
-            exporterLesDonnéesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { excelToolStripMenuItem });
+            exporterLesDonnéesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { excelToolStripMenuItem, cSVToolStripMenuItem });
             exporterLesDonnéesToolStripMenuItem.Name = "exporterLesDonnéesToolStripMenuItem";
             exporterLesDonnéesToolStripMenuItem.Size = new Size(161, 24);
             exporterLesDonnéesToolStripMenuItem.Text = "Exporter les données";
@@ -309,6 +310,13 @@
             excelToolStripMenuItem.Size = new Size(224, 26);
             excelToolStripMenuItem.Text = "Excel";
             excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
+            // 
+            // cSVToolStripMenuItem
+            // 
+            cSVToolStripMenuItem.Name = "cSVToolStripMenuItem";
+            cSVToolStripMenuItem.Size = new Size(224, 26);
+            cSVToolStripMenuItem.Text = "CSV";
+            cSVToolStripMenuItem.Click += cSVToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -369,5 +377,6 @@
         private ToolStripMenuItem changerDeBaseDeDonnéesToolStripMenuItem;
         private ToolStripMenuItem exporterLesDonnéesToolStripMenuItem;
         private ToolStripMenuItem excelToolStripMenuItem;
+        private ToolStripMenuItem cSVToolStripMenuItem;
     }
 }

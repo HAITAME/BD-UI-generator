@@ -2,6 +2,7 @@
 using OfficeOpenXml;
 using System;
 using System.Data;
+using System.Text;
 using System.Windows.Forms;
 
 namespace BD_UI
@@ -89,18 +90,22 @@ namespace BD_UI
                 ClearRelatedTableData();
 
                 selectedTableName = list_tables.SelectedItem.ToString();
+
                 LoadTableData(selectedTableName);
-                LoadTableSchema(selectedTableName);
-                this.add.Enabled = true;
-                this.add.Visible = true;
                 if (!MainTab.TabPages.Contains(Parcourir))
                 {
                     MainTab.TabPages.Add(Parcourir);
                 }
+                LoadTableSchema(selectedTableName);
                 if (!MainTab.TabPages.Contains(Structure))
                 {
                     MainTab.TabPages.Add(Structure);
                 }
+
+                LoadRelatedTable(selectedTableName);
+                this.add.Enabled = true;
+
+                this.add.Visible = true;
 
             }
             else
@@ -157,6 +162,32 @@ namespace BD_UI
             {
                 Disconnect();
             }
+        }
+        private void LoadRelatedTable(string tableName)
+        {
+            try
+            {
+                DataTable relatedTables = GetRelatedTables(tableName);
+                if (relatedTables.Rows.Count > 0)
+                {
+                    DisplayRelatedTables(relatedTables);
+                    if (!MainTab.TabPages.Contains(Relation))
+                    {
+                        MainTab.TabPages.Add(Relation);
+                    }
+                }
+                else
+                {
+                    MainTab.SelectedTab = Parcourir;
+                    MainTab.TabPages.Remove(Relation);
+                    ClearRelatedTableData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+
         }
         private void playground_Load(object sender, EventArgs e)
         {
@@ -368,10 +399,20 @@ namespace BD_UI
             RelatedTables.Controls.Clear();
             RelatedTableData.DataSource = null;
         }
+        private void ClearTabPages()
+        {
+            selectedTableName = null;
+            RelatedTable_Name = null;
+            table_data.DataSource = null;
+            RelatedTableData.DataSource = null;
+            ViewStructure.DataSource = null;
+            ClearRelatedTableData();
+        }
 
         private void RafraichirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Rafraîchir");
+            //HideTabPages();
             LoadTables();
 
         }
@@ -443,6 +484,8 @@ namespace BD_UI
                 string newConnectionString = cnx_str2 + $"Database={dbName};";
                 cnx_str = newConnectionString;
                 connection = new MySqlConnection(cnx_str);
+                ClearTabPages();
+
 
                 LoadTables();
             }
@@ -453,23 +496,20 @@ namespace BD_UI
         }
 
         private void excelToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        {
             ExportToExcel(table_data);
         }
-
-
-
         private void ExportToExcel(DataGridView dataGridView)
         {
-          try
+            try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Excel Documents (*.xlsx)|*.xlsx";
                 sfd.FileName = $"{selectedTableName}.xlsx";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                   using (ExcelPackage package = new ExcelPackage(new FileInfo(sfd.FileName)))
-                   {
+                    using (ExcelPackage package = new ExcelPackage(new FileInfo(sfd.FileName)))
+                    {
                         ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
                         for (int i = 0; i < dataGridView.Columns.Count; i++)
                         {
@@ -490,6 +530,66 @@ namespace BD_UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur lors de l'exportation vers Excel : {ex.Message}", "Erreur");
+            }
+        }
+
+        private void cSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportToCSV(table_data);
+        }
+
+        private void ExportToCSV(DataGridView dataGridView)
+        {
+            if (dataGridView == null || dataGridView.Rows.Count == 0)
+            {
+                MessageBox.Show("Aucune donnée à exporter.", "Export CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Sélection du chemin du fichier CSV
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Fichiers CSV (*.csv)|*.csv";
+            sfd.FileName = $"{table_data}.csv";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
+                    {
+                        for (int i = 0; i < dataGridView.Columns.Count; i++)
+                        {
+                            sw.Write(dataGridView.Columns[i].HeaderText);
+                            if (i < dataGridView.Columns.Count - 1)
+                            {
+                                sw.Write(",");
+                            }
+                        }
+                        sw.WriteLine();
+
+                        // Écriture des données de chaque ligne
+                        foreach (DataGridViewRow row in dataGridView.Rows)
+                        {
+                            for (int i = 0; i < dataGridView.Columns.Count; i++)
+                            {
+                                if (row.Cells[i].Value != null)
+                                {
+                                    sw.Write(row.Cells[i].Value.ToString());
+                                }
+                                if (i < dataGridView.Columns.Count - 1)
+                                {
+                                    sw.Write(",");
+                                }
+                            }
+                            sw.WriteLine();
+                        }
+
+                        MessageBox.Show("Les données ont été exportées avec succès.", "Export CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erreur lors de l'exportation vers CSV : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
