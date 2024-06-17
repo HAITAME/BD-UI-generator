@@ -335,26 +335,94 @@ namespace BD_UI
             {
                 Connecte();
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
-                int id =Convert.ToInt32(row.Cells["id"].Value);
-                Editor editor = new Editor(connection, cnx_str ,id , RelatedTable_Name);
+                int id = Convert.ToInt32(row.Cells["id"].Value);
+                Editor editor = new Editor(connection, cnx_str, id, RelatedTable_Name);
                 editor.ShowDialog();
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {
                     LoadTableData(RelatedTable_Name);
                 }
-            }catch
+            }
+            catch
             {
                 MessageBox.Show("Selectionner une ligne valide");
             }
-            finally {
+            finally
+            {
                 Disconnect();
             }
-        }        
+        }
         private void ClearRelatedTableData()
         {
             RelatedTables.Controls.Clear();
             RelatedTableData.DataSource = null;
         }
-        
+
+        private void RafraichirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show("Rafraîchir");
+            LoadTables();
+
+        }
+
+        private async void changerDeBaseDeDonnéesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Connecte();
+                changerDeBaseDeDonnéesToolStripMenuItem.DropDownItems.Clear();
+                string query = "SHOW DATABASES";
+                
+                //List<string> databaseNames = new List<string>();
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        if (!reader.IsDBNull(0))
+                        {
+                            string dbName = reader.GetString(0);
+                            //databaseNames.Add(dbName);
+                            ToolStripMenuItem dbItem = new ToolStripMenuItem(dbName);
+                            changerDeBaseDeDonnéesToolStripMenuItem.DropDownItems.Add(dbItem);
+                        }
+                    }
+                }
+
+
+
+                
+                /*
+                if (databaseNames.Count > 0)
+                {
+                    //string databaseList = string.Join(Environment.NewLine, databaseNames);
+                    //MessageBox.Show($"Bases de données disponibles :{Environment.NewLine}{databaseList}", "Bases de données");
+                    foreach (string dbName in databaseNames)
+                    {
+                        ToolStripMenuItem dbItem = new ToolStripMenuItem(dbName);
+                        changerDeBaseDeDonnéesToolStripMenuItem.DropDownItems.Add(dbItem);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Aucune base de données disponible.", "Information");
+                }
+                */
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+            finally
+            {
+                Disconnect();
+            }
+        }
+
     }
 }
+

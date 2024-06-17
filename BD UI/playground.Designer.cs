@@ -47,6 +47,9 @@
             Structure = new TabPage();
             ViewStructure = new DataGridView();
             Relation = new TabPage();
+            menuStrip1 = new MenuStrip();
+            RafraichirToolStripMenuItem = new ToolStripMenuItem();
+            changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -58,6 +61,7 @@
             Structure.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ViewStructure).BeginInit();
             Relation.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // list_tables
@@ -77,7 +81,7 @@
             RelatedTableData.Location = new Point(12, 62);
             RelatedTableData.Name = "RelatedTableData";
             RelatedTableData.RowHeadersWidth = 51;
-            RelatedTableData.Size = new Size(784, 470);
+            RelatedTableData.Size = new Size(784, 447);
             RelatedTableData.TabIndex = 6;
             RelatedTableData.CellContentClick += RelatedTableData_CellContentClick;
             // 
@@ -107,9 +111,9 @@
             panel1.Controls.Add(Menu);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(list_tables);
-            panel1.Location = new Point(1, 0);
+            panel1.Location = new Point(1, 25);
             panel1.Name = "panel1";
-            panel1.Size = new Size(168, 575);
+            panel1.Size = new Size(168, 546);
             panel1.TabIndex = 11;
             // 
             // panel3
@@ -120,7 +124,7 @@
             panel3.Controls.Add(label2);
             panel3.Location = new Point(3, 406);
             panel3.Name = "panel3";
-            panel3.Size = new Size(159, 166);
+            panel3.Size = new Size(159, 137);
             panel3.TabIndex = 13;
             // 
             // add
@@ -202,7 +206,7 @@
             table_data.Location = new Point(6, 8);
             table_data.Name = "table_data";
             table_data.RowHeadersWidth = 51;
-            table_data.Size = new Size(792, 521);
+            table_data.Size = new Size(792, 498);
             table_data.TabIndex = 5;
             table_data.CellContentClick += table_data_CellContentClick_1;
             // 
@@ -212,10 +216,10 @@
             MainTab.Controls.Add(Parcourir);
             MainTab.Controls.Add(Structure);
             MainTab.Controls.Add(Relation);
-            MainTab.Location = new Point(171, 4);
+            MainTab.Location = new Point(171, 27);
             MainTab.Name = "MainTab";
             MainTab.SelectedIndex = 0;
-            MainTab.Size = new Size(812, 571);
+            MainTab.Size = new Size(812, 548);
             MainTab.SizeMode = TabSizeMode.FillToRight;
             MainTab.TabIndex = 15;
             // 
@@ -225,7 +229,7 @@
             Parcourir.Location = new Point(4, 29);
             Parcourir.Name = "Parcourir";
             Parcourir.Padding = new Padding(3);
-            Parcourir.Size = new Size(804, 538);
+            Parcourir.Size = new Size(804, 515);
             Parcourir.TabIndex = 0;
             Parcourir.Text = "Parcourir";
             Parcourir.UseVisualStyleBackColor = true;
@@ -236,7 +240,7 @@
             Structure.Location = new Point(4, 29);
             Structure.Name = "Structure";
             Structure.Padding = new Padding(3);
-            Structure.Size = new Size(804, 538);
+            Structure.Size = new Size(804, 515);
             Structure.TabIndex = 1;
             Structure.Text = "Structure";
             Structure.UseVisualStyleBackColor = true;
@@ -261,10 +265,34 @@
             Relation.Location = new Point(4, 29);
             Relation.Name = "Relation";
             Relation.Padding = new Padding(3);
-            Relation.Size = new Size(804, 538);
+            Relation.Size = new Size(804, 515);
             Relation.TabIndex = 2;
             Relation.Text = "Relation";
             Relation.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(983, 28);
+            menuStrip1.TabIndex = 16;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // RafraichirToolStripMenuItem
+            // 
+            RafraichirToolStripMenuItem.Name = "RafraichirToolStripMenuItem";
+            RafraichirToolStripMenuItem.Size = new Size(86, 24);
+            RafraichirToolStripMenuItem.Text = "Rafraîchir";
+            RafraichirToolStripMenuItem.Click += RafraichirToolStripMenuItem_Click;
+            // 
+            // changerDeBaseDeDonnéesToolStripMenuItem
+            // 
+            changerDeBaseDeDonnéesToolStripMenuItem.Name = "changerDeBaseDeDonnéesToolStripMenuItem";
+            changerDeBaseDeDonnéesToolStripMenuItem.Size = new Size(215, 24);
+            changerDeBaseDeDonnéesToolStripMenuItem.Text = "Changer de base de données";
+            changerDeBaseDeDonnéesToolStripMenuItem.Click += changerDeBaseDeDonnéesToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -273,6 +301,8 @@
             ClientSize = new Size(983, 574);
             Controls.Add(MainTab);
             Controls.Add(panel1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "Playground";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Playground";
@@ -291,7 +321,10 @@
             Structure.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ViewStructure).EndInit();
             Relation.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -315,5 +348,8 @@
         private TabPage Structure;
         private DataGridView ViewStructure;
         private TabPage Relation;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem RafraichirToolStripMenuItem;
+        private ToolStripMenuItem changerDeBaseDeDonnéesToolStripMenuItem;
     }
 }
