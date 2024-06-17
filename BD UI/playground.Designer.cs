@@ -85,7 +85,7 @@
             RelatedTableData.Location = new Point(12, 62);
             RelatedTableData.Name = "RelatedTableData";
             RelatedTableData.RowHeadersWidth = 51;
-            RelatedTableData.Size = new Size(784, 447);
+            RelatedTableData.Size = new Size(784, 439);
             RelatedTableData.TabIndex = 6;
             RelatedTableData.CellContentClick += RelatedTableData_CellContentClick;
             // 
@@ -244,7 +244,7 @@
             Structure.Location = new Point(4, 29);
             Structure.Name = "Structure";
             Structure.Padding = new Padding(3);
-            Structure.Size = new Size(804, 515);
+            Structure.Size = new Size(804, 507);
             Structure.TabIndex = 1;
             Structure.Text = "Structure";
             Structure.UseVisualStyleBackColor = true;
@@ -256,10 +256,10 @@
             ViewStructure.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ViewStructure.BackgroundColor = SystemColors.Control;
             ViewStructure.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ViewStructure.Location = new Point(8, 8);
+            ViewStructure.Location = new Point(3, 8);
             ViewStructure.Name = "ViewStructure";
             ViewStructure.RowHeadersWidth = 51;
-            ViewStructure.Size = new Size(790, 527);
+            ViewStructure.Size = new Size(790, 496);
             ViewStructure.TabIndex = 6;
             // 
             // Relation
@@ -269,7 +269,7 @@
             Relation.Location = new Point(4, 29);
             Relation.Name = "Relation";
             Relation.Padding = new Padding(3);
-            Relation.Size = new Size(804, 515);
+            Relation.Size = new Size(804, 507);
             Relation.TabIndex = 2;
             Relation.Text = "Relation";
             Relation.UseVisualStyleBackColor = true;

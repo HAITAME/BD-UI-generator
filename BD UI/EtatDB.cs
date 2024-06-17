@@ -86,10 +86,10 @@ namespace BD_UI
             listViewProcessus.Columns.Add("Id", 50, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("User", 100, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("Host", 150, HorizontalAlignment.Left);
-            listViewProcessus.Columns.Add("DB", 100, HorizontalAlignment.Left);
+            listViewProcessus.Columns.Add("DB", 150, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("Command", 100, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("Time", 50, HorizontalAlignment.Left);
-            listViewProcessus.Columns.Add("State", 100, HorizontalAlignment.Left);
+            listViewProcessus.Columns.Add("State", 300, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("Info", 300, HorizontalAlignment.Left);
         }
 
