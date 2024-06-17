@@ -244,6 +244,8 @@ namespace BD_UI
                 Button button = new Button();
                 button.Text = relatedTableName;
                 RelatedTable_Name = relatedTableName;
+                button.Width = 100;
+                button.Height = 30;
                 button.Click += (sender, e) =>
                 {
                     LoadRelatedTableData(relatedTableName);
@@ -601,6 +603,16 @@ namespace BD_UI
         {
             EtatDB etat = new EtatDB(connection, cnx_str);
             etat.ShowDialog();
+
+        }
+
+        private void deconnecterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Disconnect();
+            this.Hide();
+            Login login = new Login();
+            login.ShowDialog();
+            this.Close();
 
         }
     }

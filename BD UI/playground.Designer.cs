@@ -54,6 +54,7 @@
             excelToolStripMenuItem = new ToolStripMenuItem();
             cSVToolStripMenuItem = new ToolStripMenuItem();
             etatToolStripMenuItem = new ToolStripMenuItem();
+            deconnecterToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -143,7 +144,7 @@
             // 
             // buttonEdit
             // 
-            buttonEdit.Location = new Point(31, 96);
+            buttonEdit.Location = new Point(31, 95);
             buttonEdit.Name = "buttonEdit";
             buttonEdit.Size = new Size(94, 29);
             buttonEdit.TabIndex = 13;
@@ -277,7 +278,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem, deconnecterToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(983, 28);
@@ -308,14 +309,14 @@
             // excelToolStripMenuItem
             // 
             excelToolStripMenuItem.Name = "excelToolStripMenuItem";
-            excelToolStripMenuItem.Size = new Size(126, 26);
+            excelToolStripMenuItem.Size = new Size(224, 26);
             excelToolStripMenuItem.Text = "Excel";
             excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
             // 
             // cSVToolStripMenuItem
             // 
             cSVToolStripMenuItem.Name = "cSVToolStripMenuItem";
-            cSVToolStripMenuItem.Size = new Size(126, 26);
+            cSVToolStripMenuItem.Size = new Size(224, 26);
             cSVToolStripMenuItem.Text = "CSV";
             cSVToolStripMenuItem.Click += cSVToolStripMenuItem_Click;
             // 
@@ -325,6 +326,13 @@
             etatToolStripMenuItem.Size = new Size(49, 24);
             etatToolStripMenuItem.Text = "État";
             etatToolStripMenuItem.Click += etatToolStripMenuItem_Click;
+            // 
+            // deconnecterToolStripMenuItem
+            // 
+            deconnecterToolStripMenuItem.Name = "deconnecterToolStripMenuItem";
+            deconnecterToolStripMenuItem.Size = new Size(107, 24);
+            deconnecterToolStripMenuItem.Text = "Deconnecter";
+            deconnecterToolStripMenuItem.Click += deconnecterToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -387,5 +395,7 @@
         private ToolStripMenuItem excelToolStripMenuItem;
         private ToolStripMenuItem cSVToolStripMenuItem;
         private ToolStripMenuItem etatToolStripMenuItem;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private ToolStripMenuItem deconnecterToolStripMenuItem;
     }
 }
