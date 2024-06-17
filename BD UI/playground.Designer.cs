@@ -324,6 +324,7 @@
             etatToolStripMenuItem.Name = "etatToolStripMenuItem";
             etatToolStripMenuItem.Size = new Size(49, 24);
             etatToolStripMenuItem.Text = "État";
+            etatToolStripMenuItem.Click += etatToolStripMenuItem_Click;
             // 
             // Playground
             // 

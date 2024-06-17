@@ -63,6 +63,26 @@ namespace BD_UI.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BD_etat_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("BD_etat-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BD_etat_removebg_preview__1_ {
+            get {
+                object obj = ResourceManager.GetObject("BD_etat-removebg-preview (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap database_server_icon_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("database-server-icon-removebg-preview", resourceCulture);

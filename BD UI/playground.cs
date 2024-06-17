@@ -597,6 +597,12 @@ namespace BD_UI
             }
         }
 
+        private void etatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EtatDB etat = new EtatDB(connection, cnx_str);
+            etat.ShowDialog();
+
+        }
     }
 }
 
