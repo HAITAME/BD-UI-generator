@@ -83,7 +83,7 @@
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 3;
-            btnDelete.Text = "Delete";
+            btnDelete.Text = "Supprimer";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
             // 
@@ -93,7 +93,7 @@
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(94, 29);
             btnSave.TabIndex = 2;
-            btnSave.Text = "Save";
+            btnSave.Text = "Enregistrer";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
@@ -103,7 +103,7 @@
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(94, 29);
             btnNext.TabIndex = 1;
-            btnNext.Text = "Next";
+            btnNext.Text = "Suivant";
             btnNext.UseVisualStyleBackColor = true;
             btnNext.Click += btnNext_Click;
             // 
@@ -113,7 +113,7 @@
             btnPrevious.Name = "btnPrevious";
             btnPrevious.Size = new Size(94, 29);
             btnPrevious.TabIndex = 0;
-            btnPrevious.Text = "Previous";
+            btnPrevious.Text = "Précédent";
             btnPrevious.UseVisualStyleBackColor = true;
             btnPrevious.Click += btnPrevious_Click;
             // 

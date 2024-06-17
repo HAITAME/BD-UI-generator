@@ -498,7 +498,7 @@ namespace BD_UI
 
                     MessageBox.Show("Les modifications ont été enregistrées avec succès.", "Sauvegarde réussie", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     UpdateResult = 1;
-                    DisplayRow(currentIndex); // Update display without reloading entire table
+                    DisplayRow(currentIndex); 
                 }
                 catch (MySqlException ex)
                 {

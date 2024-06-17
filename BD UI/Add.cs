@@ -73,9 +73,10 @@ namespace BD_UI
             }
 
             Button submitButton = new Button();
-            submitButton.Text = "Submit";
+            submitButton.Text = "Enregistrer";
             submitButton.Location = new Point(150, yPosition);
             submitButton.Click += new EventHandler(SubmitButton_Click);
+            submitButton.AutoSize = true;
             this.Controls.Add(submitButton);
         }
 
@@ -203,13 +204,13 @@ namespace BD_UI
                     command.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("Data inserted successfully!");
+                MessageBox.Show("Données insérées avec succès !");
                 InsertResult = 1;
                 Disconnect();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
                 InsertResult = 0;
             }
             finally

@@ -28,7 +28,7 @@ namespace BD_UI
         {
             listView1.View = View.Details;
             listView1.Columns.Add("Variable", 200, HorizontalAlignment.Left);
-            listView1.Columns.Add("Value", 100, HorizontalAlignment.Left);
+            listView1.Columns.Add("Valeur", 100, HorizontalAlignment.Left);
         }
 
         private void ShowInfo()
