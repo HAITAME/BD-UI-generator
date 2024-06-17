@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using OfficeOpenXml;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -382,7 +383,7 @@ namespace BD_UI
                 Connecte();
                 changerDeBaseDeDonnéesToolStripMenuItem.DropDownItems.Clear();
                 string query = "SHOW DATABASES";
-                
+
                 //List<string> databaseNames = new List<string>();
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
@@ -402,7 +403,7 @@ namespace BD_UI
 
 
 
-                
+
                 /*
                 if (databaseNames.Count > 0)
                 {
@@ -436,21 +437,61 @@ namespace BD_UI
         private void DbItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            string dbName = item.Text;
-            string newConnectionString = cnx_str2 + $"Database={dbName};";
-            //MessageBox.Show(newConnectionString);
-            
-            //this.Close();
-            //Playground playground = new Playground(connection, newConnectionString, cnx_str2);
-            //playground.ShowDialog();
-            cnx_str = newConnectionString;
-            connection  = new MySqlConnection(cnx_str);
-            
-            LoadTables();
+            if (item != null)
+            {
+                string dbName = item.Text;
+                string newConnectionString = cnx_str2 + $"Database={dbName};";
+                cnx_str = newConnectionString;
+                connection = new MySqlConnection(cnx_str);
 
-            
+                LoadTables();
+            }
+            else
+            {
+                MessageBox.Show("Erreur : Impossible de changer de base de données.", "Erreur");
+            }
         }
 
+        private void excelToolStripMenuItem_Click(object sender, EventArgs e)
+        {            
+            ExportToExcel(table_data);
+        }
+
+
+
+        private void ExportToExcel(DataGridView dataGridView)
+        {
+          try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel Documents (*.xlsx)|*.xlsx";
+                sfd.FileName = $"{selectedTableName}.xlsx";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                   using (ExcelPackage package = new ExcelPackage(new FileInfo(sfd.FileName)))
+                   {
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
+                        for (int i = 0; i < dataGridView.Columns.Count; i++)
+                        {
+                            worksheet.Cells[1, i + 1].Value = dataGridView.Columns[i].HeaderText;
+                        }
+                        for (int i = 0; i < dataGridView.Rows.Count; i++)
+                        {
+                            for (int j = 0; j < dataGridView.Columns.Count; j++)
+                            {
+                                worksheet.Cells[i + 2, j + 1].Value = dataGridView.Rows[i].Cells[j].Value?.ToString();
+                            }
+                        }
+                        package.Save();
+                    }
+                    MessageBox.Show("Données exportées avec succès.", "Export Excel");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'exportation vers Excel : {ex.Message}", "Erreur");
+            }
+        }
 
     }
 }

@@ -50,6 +50,8 @@
             menuStrip1 = new MenuStrip();
             RafraichirToolStripMenuItem = new ToolStripMenuItem();
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
+            exporterLesDonnéesToolStripMenuItem = new ToolStripMenuItem();
+            excelToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -273,7 +275,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(983, 28);
@@ -293,6 +295,20 @@
             changerDeBaseDeDonnéesToolStripMenuItem.Size = new Size(215, 24);
             changerDeBaseDeDonnéesToolStripMenuItem.Text = "Changer de base de données";
             changerDeBaseDeDonnéesToolStripMenuItem.Click += changerDeBaseDeDonnéesToolStripMenuItem_Click;
+            // 
+            // exporterLesDonnéesToolStripMenuItem
+            // 
+            exporterLesDonnéesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { excelToolStripMenuItem });
+            exporterLesDonnéesToolStripMenuItem.Name = "exporterLesDonnéesToolStripMenuItem";
+            exporterLesDonnéesToolStripMenuItem.Size = new Size(161, 24);
+            exporterLesDonnéesToolStripMenuItem.Text = "Exporter les données";
+            // 
+            // excelToolStripMenuItem
+            // 
+            excelToolStripMenuItem.Name = "excelToolStripMenuItem";
+            excelToolStripMenuItem.Size = new Size(224, 26);
+            excelToolStripMenuItem.Text = "Excel";
+            excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -351,5 +367,7 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem RafraichirToolStripMenuItem;
         private ToolStripMenuItem changerDeBaseDeDonnéesToolStripMenuItem;
+        private ToolStripMenuItem exporterLesDonnéesToolStripMenuItem;
+        private ToolStripMenuItem excelToolStripMenuItem;
     }
 }
