@@ -14,11 +14,13 @@ namespace BD_UI
         private string cnx_str2;
         string selectedTableName;
         string RelatedTable_Name;
-        public Playground(MySqlConnection connection, string cnx_str, string cnx_str2)
+        string database;
+        public Playground(MySqlConnection connection, string cnx_str, string cnx_str2, string db)
         {
             InitializeComponent();
             this.connection = connection;
             this.cnx_str = cnx_str;
+            this.database = db;
             this.add.Enabled = false;
             this.add.Visible = false;
             MainTab.TabPages.Remove(Relation);
@@ -283,7 +285,9 @@ namespace BD_UI
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            Editor editor = new Editor(connection, cnx_str);
+            List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
+
+            Editor editor = new Editor(connection, cnx_str , primaryKeys);
             editor.ShowDialog();
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
@@ -293,7 +297,8 @@ namespace BD_UI
         }
         private void add_Click(object sender, EventArgs e)
         {
-            Add add = new Add(connection, selectedTableName);
+            List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
+            Add add = new Add(connection, selectedTableName , primaryKeys);
             add.ShowDialog();
             int r = add.InsertResult;
             if (r == 1)
@@ -353,7 +358,8 @@ namespace BD_UI
                 DataGridViewRow row = table_data.Rows[e.RowIndex];
                 int id = Convert.ToInt32(row.Cells["id"].Value);
                 //MessageBox.Show(id.ToString());
-                Editor editor = new Editor(connection, cnx_str, id, selectedTableName);
+                List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
+                Editor editor = new Editor(connection, cnx_str, primaryKeys, id, selectedTableName);
                 editor.ShowDialog();
                 //MessageBox.Show(id.ToString());
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
@@ -380,7 +386,8 @@ namespace BD_UI
                 Connecte();
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
                 int id = Convert.ToInt32(row.Cells["id"].Value);
-                Editor editor = new Editor(connection, cnx_str, id, RelatedTable_Name);
+                List<string> primaryKeys = GetPrimaryKeys(connection, database, RelatedTable_Name);
+                Editor editor = new Editor(connection, cnx_str, primaryKeys , id, RelatedTable_Name);
                 editor.ShowDialog();
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {
@@ -414,7 +421,10 @@ namespace BD_UI
         private void RafraichirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Rafraîchir");
-            //HideTabPages();
+            //HideTabPages()
+            this.Refresh();
+            ClearTabPages();
+
             LoadTables();
 
         }
@@ -487,8 +497,8 @@ namespace BD_UI
                 cnx_str = newConnectionString;
                 connection = new MySqlConnection(cnx_str);
                 ClearTabPages();
-
-
+                //this.Refresh();
+                this.database = dbName;
                 LoadTables();
             }
             else
@@ -496,7 +506,6 @@ namespace BD_UI
                 MessageBox.Show("Erreur : Impossible de changer de base de données.", "Erreur");
             }
         }
-
         private void excelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExportToExcel(table_data);
@@ -539,7 +548,6 @@ namespace BD_UI
                 MessageBox.Show($"Erreur lors de l'exportation vers Excel : {ex.Message}", "Erreur");
             }
         }
-
         private void cSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExportToCSV(table_data);
@@ -614,6 +622,32 @@ namespace BD_UI
             login.ShowDialog();
             this.Close();
 
+        }
+
+        private List<string> GetPrimaryKeys(MySqlConnection connection, string database, string table)
+        {
+            var primaryKeys = new List<string>();
+
+            string query = $@"
+                SELECT COLUMN_NAME
+                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                WHERE TABLE_SCHEMA = '{database}'
+                  AND TABLE_NAME = '{table}'
+                  AND CONSTRAINT_NAME = 'PRIMARY'";
+            Connecte();
+            using (var command = new MySqlCommand(query, connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        primaryKeys.Add(reader["COLUMN_NAME"].ToString());
+                    }
+                }
+            }
+            Disconnect();
+
+            return primaryKeys;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace BD_UI
 
                         // Optionnel : Masquer le formulaire de connexion et afficher le formulaire principal
                         this.Hide();
-                        Playground mainForm = new Playground(connection, connectionString, connectionString2);
+                        Playground mainForm = new Playground(connection, connectionString, connectionString2, databaseName);
                         mainForm.ShowDialog();
                         this.Close();
 

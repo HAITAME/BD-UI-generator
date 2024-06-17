@@ -11,13 +11,15 @@ namespace BD_UI
         private MySqlConnection connection;
         private string tableName;
         private DataTable dataTable;
+        private List<string> primaryKeys;
         public int InsertResult { get; private set; }
 
-        public Add(MySqlConnection connection, string tableName)
+        public Add(MySqlConnection connection, string tableName ,List<string> keys)
         {
             InitializeComponent();
             this.connection = connection;
             this.tableName = tableName;
+            this.primaryKeys = keys;
             LoadTableSchema();
             CreateFormControls();
         }
@@ -60,16 +62,19 @@ namespace BD_UI
                 string columnName = row["Field"].ToString();
                 string columnType = row["Type"].ToString();
 
-                Label label = CreateLabel(columnName, yPosition);
-                Control inputControl = CreateInputControl(columnType);
+                if (!primaryKeys.Contains(columnName))
+                {
+                    Label label = CreateLabel(columnName, yPosition);
+                    Control inputControl = CreateInputControl(columnType);
 
-                label.AutoSize = true;
-                this.Controls.Add(label);
-                this.Controls.Add(inputControl);
+                    label.AutoSize = true;
+                    this.Controls.Add(label);
+                    this.Controls.Add(inputControl);
 
-                inputControl.Name = columnName;
-                inputControl.Location = new Point(150, yPosition - 4);
-                yPosition += 30;
+                    inputControl.Name = columnName;
+                    inputControl.Location = new Point(150, yPosition - 4);
+                    yPosition += 30;
+                }
             }
 
             Button submitButton = new Button();
@@ -90,22 +95,25 @@ namespace BD_UI
 
         private Control CreateInputControl(string columnType)
         {
-            if (IsNumericType(columnType))
-            {
-                return CreateNumericUpDown();
-            }
-            else if (IsDateType(columnType))
-            {
-                return CreateDateTimePicker();
-            }
-            else if (IsBooleanType(columnType))
-            {
-                return CreateCheckBox();
-            }
-            else
-            {
-                return CreateTextBox();
-            }
+          
+                if (IsNumericType(columnType))
+                {
+                    return CreateNumericUpDown();
+                }
+                else if (IsDateType(columnType))
+                {
+                    return CreateDateTimePicker();
+                }
+                else if (IsBooleanType(columnType))
+                {
+                    return CreateCheckBox();
+                }
+                else
+                {
+                    return CreateTextBox();
+                }
+
+            
         }
 
         private bool IsNumericType(string columnType)
@@ -123,6 +131,7 @@ namespace BD_UI
             return columnType.Equals("bit(1)");
         }
 
+        
         private NumericUpDown CreateNumericUpDown()
         {
             NumericUpDown numericUpDown = new NumericUpDown();
@@ -149,6 +158,7 @@ namespace BD_UI
             textBox.Width = 200;
             return textBox;
         }
+
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
