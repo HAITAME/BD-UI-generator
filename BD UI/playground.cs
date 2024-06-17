@@ -501,6 +501,11 @@ namespace BD_UI
         }
         private void ExportToExcel(DataGridView dataGridView)
         {
+            if (dataGridView == null || dataGridView.Rows.Count == 0)
+            {
+                MessageBox.Show("Aucune donnée à exporter.", "Export CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
@@ -546,10 +551,9 @@ namespace BD_UI
                 return;
             }
 
-            // Sélection du chemin du fichier CSV
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Fichiers CSV (*.csv)|*.csv";
-            sfd.FileName = $"{table_data}.csv";
+            sfd.FileName = $"{selectedTableName}.csv";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 try
