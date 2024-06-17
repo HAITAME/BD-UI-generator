@@ -141,7 +141,7 @@ namespace BD_UI
                     btnAjouter.Font = new Font("Arial", 9, FontStyle.Bold);
                     btnAjouter.Click += (sender, e) =>
                     {
-                        MessageBox.Show(tableName);
+                        //MessageBox.Show(tableName);
                         Add add = new Add(connection, tableName);
                         add.ShowDialog();
                         int r = add.InsertResult;
@@ -155,6 +155,11 @@ namespace BD_UI
                     tableLayoutPanel.Controls.Add(btnAjouter, 0, 1);
 
                     panelEditor.Controls.Add(tableLayoutPanel);
+
+                    btnDelete.Visible = false;
+                    btnSave.Visible = false;
+                    btnDelete.Visible = false;
+                    btnSave.Visible = false;
 
                     return;
                 }

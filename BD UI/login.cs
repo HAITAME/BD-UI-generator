@@ -26,6 +26,7 @@ namespace BD_UI
             if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(host) && !string.IsNullOrEmpty(databaseName))
             {
                 string connectionString = $"Server={host};Database={databaseName};Uid={username};Pwd={password};SslMode=none;";
+                string connectionString2 = $"Server={host};Uid={username};Pwd={password};SslMode=none;";
 
                 try
                 {
@@ -54,7 +55,7 @@ namespace BD_UI
 
                         // Optionnel : Masquer le formulaire de connexion et afficher le formulaire principal
                         this.Hide();
-                        Playground mainForm = new Playground(connection, connectionString);
+                        Playground mainForm = new Playground(connection, connectionString, connectionString2);
                         mainForm.ShowDialog();
                         this.Close();
 

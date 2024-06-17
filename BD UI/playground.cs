@@ -9,9 +9,10 @@ namespace BD_UI
     {
         private MySqlConnection connection;
         private string cnx_str;
+        private string cnx_str2;
         string selectedTableName;
         string RelatedTable_Name;
-        public Playground(MySqlConnection connection, string cnx_str)
+        public Playground(MySqlConnection connection, string cnx_str, string cnx_str2)
         {
             InitializeComponent();
             this.connection = connection;
@@ -24,6 +25,7 @@ namespace BD_UI
 
 
             LoadTables();
+            this.cnx_str2 = cnx_str2;
         }
         private void Connecte()
         {
@@ -384,6 +386,7 @@ namespace BD_UI
                             string dbName = reader.GetString(0);
                             //databaseNames.Add(dbName);
                             ToolStripMenuItem dbItem = new ToolStripMenuItem(dbName);
+                            dbItem.Click += DbItem_Click;
                             changerDeBaseDeDonnéesToolStripMenuItem.DropDownItems.Add(dbItem);
                         }
                     }
@@ -422,6 +425,24 @@ namespace BD_UI
                 Disconnect();
             }
         }
+        private void DbItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            string dbName = item.Text;
+            string newConnectionString = cnx_str2 + $"Database={dbName};";
+            //MessageBox.Show(newConnectionString);
+            
+            //this.Close();
+            //Playground playground = new Playground(connection, newConnectionString, cnx_str2);
+            //playground.ShowDialog();
+            cnx_str = newConnectionString;
+            connection  = new MySqlConnection(cnx_str);
+            
+            LoadTables();
+
+            
+        }
+
 
     }
 }
