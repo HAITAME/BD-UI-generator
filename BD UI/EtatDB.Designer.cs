@@ -36,18 +36,19 @@
             // listView1
             // 
             listView1.BackColor = SystemColors.HighlightText;
-            listView1.Location = new Point(229, 12);
+            listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            listView1.Location = new Point(249, 12);
             listView1.Name = "listView1";
-            listView1.Size = new Size(334, 355);
+            listView1.Size = new Size(317, 308);
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
             // 
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.BD_etat_removebg_preview__1_;
-            pictureBox1.Location = new Point(5, 71);
+            pictureBox1.Location = new Point(8, 53);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(235, 237);
+            pictureBox1.Size = new Size(235, 227);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
@@ -55,7 +56,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(575, 376);
+            ClientSize = new Size(575, 332);
             Controls.Add(listView1);
             Controls.Add(pictureBox1);
             Name = "EtatDB";

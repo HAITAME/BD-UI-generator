@@ -16,14 +16,14 @@ namespace BD_UI
             InitializeComponent();
             connectionString = cnx_str;
             this.connection = connection;
-            SetupListView(); // Appeler la méthode pour configurer les colonnes du ListView
+            SetupListView(); 
             ShowInfo();
         }
 
         private void SetupListView()
         {
-            listView1.View = View.Details; // Définir le mode de vue détaillée
-            listView1.Columns.Add("Variable", 150, HorizontalAlignment.Left);
+            listView1.View = View.Details;
+            listView1.Columns.Add("Variable", 200, HorizontalAlignment.Left);
             listView1.Columns.Add("Value", 100, HorizontalAlignment.Left);
         }
 
@@ -31,13 +31,11 @@ namespace BD_UI
         {
             try
             {
-                listView1.Items.Clear(); // Efface les éléments existants dans le ListView
-
+                listView1.Items.Clear(); 
                 using (var connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    // Ajouter les noms des variables de statut que vous souhaitez récupérer
                     string[] variableNames =
                     {
                         "Bytes_received",
@@ -45,11 +43,11 @@ namespace BD_UI
                         "Threads_connected",
                         "Threads_running",
                         "Uptime",
-                        "Questions",        // Total number of queries
-                        "Slow_queries",     // Total number of slow queries
-                        "Connections",      // Number of connection attempts
-                        "Aborted_clients",  // Number of aborted connections
-                        "Aborted_connects"  // Failed connection attempts
+                        "Questions",        
+                        "Slow_queries",     
+                        "Connections",      
+                        "Aborted_clients",  
+                        "Aborted_connects"  
                     };
 
                     foreach (string variableName in variableNames)
