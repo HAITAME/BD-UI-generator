@@ -124,6 +124,14 @@ namespace BD_UI
                 if (relatedTables.Rows.Count > 0)
                 {
                     DisplayRelatedTables(relatedTables);
+                    if (!MainTab.TabPages.Contains(Parcourir))
+                    {
+                        MainTab.TabPages.Add(Parcourir);
+                    }
+                    if (!MainTab.TabPages.Contains(Structure))
+                    {
+                        MainTab.TabPages.Add(Structure);
+                    }
                     if (!MainTab.TabPages.Contains(Relation))
                     {
                         MainTab.TabPages.Add(Relation);

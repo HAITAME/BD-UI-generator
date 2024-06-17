@@ -158,8 +158,9 @@ namespace BD_UI
 
                     btnDelete.Visible = false;
                     btnSave.Visible = false;
-                    btnDelete.Visible = false;
-                    btnSave.Visible = false;
+                    btnPrevious.Visible = false;
+                    btnNext.Visible = false;
+                    
 
                     return;
                 }
@@ -527,7 +528,10 @@ namespace BD_UI
         private void Editor_Close(object sender, FormClosingEventArgs e)
         {
             //MessageBox.Show("Fermeture de l'éditeur");
-            dataTable.Clear();
+            if(dataTable != null)
+            {
+                dataTable.Clear();
+            }
             Disconnect();
         }
 
