@@ -121,9 +121,9 @@
             // listViewQueryStat
             // 
             listViewQueryStat.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            listViewQueryStat.Location = new Point(4, 5);
+            listViewQueryStat.Location = new Point(3, 3);
             listViewQueryStat.Name = "listViewQueryStat";
-            listViewQueryStat.Size = new Size(561, 293);
+            listViewQueryStat.Size = new Size(561, 307);
             listViewQueryStat.TabIndex = 0;
             listViewQueryStat.UseCompatibleStateImageBehavior = false;
             // 
