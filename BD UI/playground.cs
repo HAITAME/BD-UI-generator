@@ -285,9 +285,9 @@ namespace BD_UI
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
+            //List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
 
-            Editor editor = new Editor(connection, cnx_str , primaryKeys);
+            Editor editor = new Editor(connection, cnx_str , database);
             editor.ShowDialog();
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
@@ -358,8 +358,8 @@ namespace BD_UI
                 DataGridViewRow row = table_data.Rows[e.RowIndex];
                 int id = Convert.ToInt32(row.Cells["id"].Value);
                 //MessageBox.Show(id.ToString());
-                List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
-                Editor editor = new Editor(connection, cnx_str, primaryKeys, id, selectedTableName);
+                //List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
+                Editor editor = new Editor(connection, cnx_str, database, id, selectedTableName);
                 editor.ShowDialog();
                 //MessageBox.Show(id.ToString());
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
@@ -386,8 +386,8 @@ namespace BD_UI
                 Connecte();
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
                 int id = Convert.ToInt32(row.Cells["id"].Value);
-                List<string> primaryKeys = GetPrimaryKeys(connection, database, RelatedTable_Name);
-                Editor editor = new Editor(connection, cnx_str, primaryKeys , id, RelatedTable_Name);
+                //List<string> primaryKeys = GetPrimaryKeys(connection, database, RelatedTable_Name);
+                Editor editor = new Editor(connection, cnx_str, database , id, RelatedTable_Name);
                 editor.ShowDialog();
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {

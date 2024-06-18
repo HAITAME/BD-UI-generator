@@ -15,29 +15,35 @@ namespace BD_UI
         private MySqlConnection connection;
         private string connectionString;
         private string tableName;
+        private string database ;
         private DataRow currentRow;
         private DataTable dataTable;
         private List<string> primaryKeys;
         private int currentIndex = -1;
 
+
         public int DeleteResult { get; private set; }
         public int UpdateResult { get; private set; }
 
-        public Editor(MySqlConnection connection, string connectionString, List<string> keys, int dataId = -1, string dataTableName = "")
+        public Editor(MySqlConnection connection, string connectionString,string db, int dataId = -1, string dataTableName = "")
         {
             InitializeComponent();
             this.connection = connection;
             this.connectionString = connectionString;
-            this.primaryKeys = keys;
+            this.database = db;
             btnPrevious.Visible = false;
             btnNext.Visible = false;
             this.FormClosing += new FormClosingEventHandler(Editor_Close);
 
             if (dataId != -1)
             {
+                primaryKeys = GetPrimaryKeys(connection, database, dataTableName);
+
                 LoadOneRowData(dataTableName, dataId);
                 comboBoxTables.Text = dataTableName;
                 this.tableName = dataTableName;
+                btnDelete.Visible = true;
+                btnSave.Visible = true;
             }
             else
             {
@@ -101,7 +107,10 @@ namespace BD_UI
             if (comboBoxTables.SelectedItem != null)
             {
                 tableName = comboBoxTables.SelectedItem.ToString();
+                primaryKeys = GetPrimaryKeys(connection, database, tableName);
+
                 LoadData(tableName);
+
             }
         }
 
@@ -123,11 +132,18 @@ namespace BD_UI
                 if (dataTable.Rows.Count == 0)
                 {
                     DisplayEmptyTableMessage(tableName);
+
                     return;
                 }
 
                 currentIndex = index;
                 DisplayRow(currentIndex);
+                btnDelete.Visible = true;
+                btnSave.Visible = true;
+                btnPrevious.Visible = true;
+                btnNext.Visible = true;
+
+
             }
             catch (MySqlException ex)
             {
@@ -370,7 +386,7 @@ namespace BD_UI
                     if (DeleteResult == 1)
                     {
                         MessageBox.Show("L'enregistrement a été supprimé avec succès.", "Succès");
-                        Close();
+                        LoadData(tableName);
                     }
                     else
                     {
@@ -467,6 +483,33 @@ namespace BD_UI
             Connect();
             //MessageBox.Show("Chargement de l'éditeur");
         }
+
+        private List<string> GetPrimaryKeys(MySqlConnection connection, string database, string table)
+        {
+            var primaryKeys = new List<string>();
+
+            string query = $@"
+                SELECT COLUMN_NAME
+                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                WHERE TABLE_SCHEMA = '{database}'
+                  AND TABLE_NAME = '{table}'
+                  AND CONSTRAINT_NAME = 'PRIMARY'";
+            Connect();
+            using (var command = new MySqlCommand(query, connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        primaryKeys.Add(reader["COLUMN_NAME"].ToString());
+                    }
+                }
+            }
+            Disconnect();
+
+            return primaryKeys;
+        }
+
 
         private void Editor_Close(object sender, FormClosingEventArgs e)
         {
