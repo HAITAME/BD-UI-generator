@@ -57,6 +57,7 @@
             supprimerLaTable = new ToolStripMenuItem();
             deconnecterToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
+            pDFToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -293,7 +294,7 @@
             // 
             // exporterLesDonnéesToolStripMenuItem
             // 
-            exporterLesDonnéesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { excelToolStripMenuItem, cSVToolStripMenuItem });
+            exporterLesDonnéesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { excelToolStripMenuItem, cSVToolStripMenuItem, pDFToolStripMenuItem });
             exporterLesDonnéesToolStripMenuItem.Name = "exporterLesDonnéesToolStripMenuItem";
             exporterLesDonnéesToolStripMenuItem.Size = new Size(161, 24);
             exporterLesDonnéesToolStripMenuItem.Text = "Exporter les données";
@@ -301,14 +302,14 @@
             // excelToolStripMenuItem
             // 
             excelToolStripMenuItem.Name = "excelToolStripMenuItem";
-            excelToolStripMenuItem.Size = new Size(126, 26);
+            excelToolStripMenuItem.Size = new Size(224, 26);
             excelToolStripMenuItem.Text = "Excel";
             excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
             // 
             // cSVToolStripMenuItem
             // 
             cSVToolStripMenuItem.Name = "cSVToolStripMenuItem";
-            cSVToolStripMenuItem.Size = new Size(126, 26);
+            cSVToolStripMenuItem.Size = new Size(224, 26);
             cSVToolStripMenuItem.Text = "CSV";
             cSVToolStripMenuItem.Click += cSVToolStripMenuItem_Click;
             // 
@@ -351,6 +352,13 @@
             menuStrip1.Size = new Size(954, 28);
             menuStrip1.TabIndex = 16;
             menuStrip1.Text = "menuStrip1";
+            // 
+            // pDFToolStripMenuItem
+            // 
+            pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
+            pDFToolStripMenuItem.Size = new Size(224, 26);
+            pDFToolStripMenuItem.Text = "PDF";
+            pDFToolStripMenuItem.Click += pDFToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -417,5 +425,6 @@
         private ToolStripMenuItem supprimerLaTable;
         private ToolStripMenuItem deconnecterToolStripMenuItem;
         private MenuStrip menuStrip1;
+        private ToolStripMenuItem pDFToolStripMenuItem;
     }
 }

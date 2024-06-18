@@ -5,6 +5,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using OfficeOpenXml;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 
 
@@ -110,7 +112,7 @@ namespace BD_UI
                 {
                     MainTab.TabPages.Add(Structure);
                 }
-                
+
                 supprimerLaTable.Enabled = true;
                 supprimerLaTable.Visible = true;
 
@@ -731,6 +733,70 @@ namespace BD_UI
             }
 
         }
+
+        private void pDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+                        ExportToPDF(table_data);
+
+        }
+        private void ExportToPDF(DataGridView dataGridView)
+        {
+            if (dataGridView == null || dataGridView.Rows.Count == 0)
+            {
+                MessageBox.Show("Aucune donnée à exporter.", "Export PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "PDF Documents (*.pdf)|*.pdf";
+            sfd.FileName = $"{selectedTableName}.pdf";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                    {
+                        Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                        PdfWriter.GetInstance(pdfDoc, stream);
+                        pdfDoc.Open();
+
+                        Paragraph title = new Paragraph($"Table: {selectedTableName}\n\n");
+                        title.Alignment = Element.ALIGN_CENTER;
+                        pdfDoc.Add(title);
+
+                        PdfPTable pdfTable = new PdfPTable(dataGridView.Columns.Count);
+                        pdfTable.WidthPercentage = 100;
+
+                        foreach (DataGridViewColumn column in dataGridView.Columns)
+                        {
+                            PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                            pdfTable.AddCell(cell);
+                        }
+
+                        foreach (DataGridViewRow row in dataGridView.Rows)
+                        {
+                            foreach (DataGridViewCell cell in row.Cells)
+                            {
+                                pdfTable.AddCell(cell.Value?.ToString());
+                            }
+                        }
+
+                        pdfDoc.Add(pdfTable);
+                        pdfDoc.Close();
+                        stream.Close();
+                    }
+
+                    MessageBox.Show("Données exportées avec succès.", "Export PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erreur lors de l'exportation vers PDF : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
     }
 }
 
