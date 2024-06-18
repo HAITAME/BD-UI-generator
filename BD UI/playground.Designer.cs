@@ -47,15 +47,16 @@
             Structure = new TabPage();
             ViewStructure = new DataGridView();
             Relation = new TabPage();
-            menuStrip1 = new MenuStrip();
             RafraichirToolStripMenuItem = new ToolStripMenuItem();
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
             exporterLesDonnéesToolStripMenuItem = new ToolStripMenuItem();
             excelToolStripMenuItem = new ToolStripMenuItem();
             cSVToolStripMenuItem = new ToolStripMenuItem();
             etatToolStripMenuItem = new ToolStripMenuItem();
-            deconnecterToolStripMenuItem = new ToolStripMenuItem();
             créerUneNouvelleTableToolStripMenuItem = new ToolStripMenuItem();
+            supprimerLaTable = new ToolStripMenuItem();
+            deconnecterToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1 = new MenuStrip();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -276,16 +277,6 @@
             Relation.Text = "Relation";
             Relation.UseVisualStyleBackColor = true;
             // 
-            // menuStrip1
-            // 
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem, créerUneNouvelleTableToolStripMenuItem, deconnecterToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(983, 28);
-            menuStrip1.TabIndex = 16;
-            menuStrip1.Text = "menuStrip1";
-            // 
             // RafraichirToolStripMenuItem
             // 
             RafraichirToolStripMenuItem.Name = "RafraichirToolStripMenuItem";
@@ -328,6 +319,20 @@
             etatToolStripMenuItem.Text = "État";
             etatToolStripMenuItem.Click += etatToolStripMenuItem_Click;
             // 
+            // créerUneNouvelleTableToolStripMenuItem
+            // 
+            créerUneNouvelleTableToolStripMenuItem.Name = "créerUneNouvelleTableToolStripMenuItem";
+            créerUneNouvelleTableToolStripMenuItem.Size = new Size(184, 24);
+            créerUneNouvelleTableToolStripMenuItem.Text = "Créer une nouvelle table";
+            créerUneNouvelleTableToolStripMenuItem.Click += créerUneNouvelleTableToolStripMenuItem_Click;
+            // 
+            // supprimerLaTable
+            // 
+            supprimerLaTable.Name = "supprimerLaTable";
+            supprimerLaTable.Size = new Size(144, 24);
+            supprimerLaTable.Text = "supprimer la table";
+            supprimerLaTable.Click += supprimerLaTableToolStripMenuItem_Click;
+            // 
             // deconnecterToolStripMenuItem
             // 
             deconnecterToolStripMenuItem.Name = "deconnecterToolStripMenuItem";
@@ -335,12 +340,17 @@
             deconnecterToolStripMenuItem.Text = "Deconnecter";
             deconnecterToolStripMenuItem.Click += deconnecterToolStripMenuItem_Click;
             // 
-            // créerUneNouvelleTableToolStripMenuItem
+            // menuStrip1
             // 
-            créerUneNouvelleTableToolStripMenuItem.Name = "créerUneNouvelleTableToolStripMenuItem";
-            créerUneNouvelleTableToolStripMenuItem.Size = new Size(184, 24);
-            créerUneNouvelleTableToolStripMenuItem.Text = "Créer une nouvelle table";
-            créerUneNouvelleTableToolStripMenuItem.Click += créerUneNouvelleTableToolStripMenuItem_Click;
+            menuStrip1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            menuStrip1.Dock = DockStyle.None;
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem, créerUneNouvelleTableToolStripMenuItem, supprimerLaTable, deconnecterToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(954, 28);
+            menuStrip1.TabIndex = 16;
+            menuStrip1.Text = "menuStrip1";
             // 
             // Playground
             // 
@@ -396,15 +406,16 @@
         private TabPage Structure;
         private DataGridView ViewStructure;
         private TabPage Relation;
-        private MenuStrip menuStrip1;
+        private System.Drawing.Printing.PrintDocument printDocument1;
         private ToolStripMenuItem RafraichirToolStripMenuItem;
         private ToolStripMenuItem changerDeBaseDeDonnéesToolStripMenuItem;
         private ToolStripMenuItem exporterLesDonnéesToolStripMenuItem;
         private ToolStripMenuItem excelToolStripMenuItem;
         private ToolStripMenuItem cSVToolStripMenuItem;
         private ToolStripMenuItem etatToolStripMenuItem;
-        private System.Drawing.Printing.PrintDocument printDocument1;
-        private ToolStripMenuItem deconnecterToolStripMenuItem;
         private ToolStripMenuItem créerUneNouvelleTableToolStripMenuItem;
+        private ToolStripMenuItem supprimerLaTable;
+        private ToolStripMenuItem deconnecterToolStripMenuItem;
+        private MenuStrip menuStrip1;
     }
 }

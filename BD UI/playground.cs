@@ -28,6 +28,8 @@ namespace BD_UI
             this.database = db;
             this.add.Enabled = false;
             this.add.Visible = false;
+            this.supprimerLaTable.Enabled = false;
+            this.supprimerLaTable.Visible = false;
             MainTab.TabPages.Remove(Relation);
             MainTab.TabPages.Remove(Parcourir);
             MainTab.TabPages.Remove(Structure);
@@ -108,6 +110,9 @@ namespace BD_UI
                 {
                     MainTab.TabPages.Add(Structure);
                 }
+                
+                supprimerLaTable.Enabled = true;
+                supprimerLaTable.Visible = true;
 
                 LoadRelatedTable(selectedTableName);
                 this.add.Enabled = true;
@@ -420,6 +425,9 @@ namespace BD_UI
             table_data.DataSource = null;
             RelatedTableData.DataSource = null;
             ViewStructure.DataSource = null;
+            supprimerLaTable.Enabled = false;
+            supprimerLaTable.Visible = false;
+
             ClearRelatedTableData();
         }
 
@@ -517,7 +525,7 @@ namespace BD_UI
         }
         private void ExportToExcel(DataGridView dataGridView)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; 
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             if (dataGridView == null || dataGridView.Rows.Count == 0)
             {
@@ -669,6 +677,58 @@ namespace BD_UI
             CreateTableForm createTableForm = new CreateTableForm(connection);
             createTableForm.ShowDialog();
             LoadTables();
+
+        }
+
+        private void DeleteTable(string tableName)
+        {
+            try
+            {
+                Connecte();
+
+                string query = $"DROP TABLE IF EXISTS `{tableName}`";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show($"La table '{tableName}' a été supprimée avec succès.", "Suppression réussie", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+            finally
+            {
+                Disconnect();
+            }
+        }
+
+        private void supprimerLaTableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedTableName != null)
+            {
+                string tableNameToDelete = selectedTableName;
+
+                DialogResult result = MessageBox.Show($"Êtes-vous sûr de vouloir supprimer la table '{tableNameToDelete}' ?", "Confirmation de suppression", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    DeleteTable(tableNameToDelete);
+                }
+                ClearTabPages();
+
+                LoadTables();
+            }
+            else
+            {
+                MessageBox.Show("Aucune table sélectionnée.", "Information");
+            }
 
         }
     }
