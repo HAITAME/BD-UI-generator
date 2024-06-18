@@ -4,6 +4,10 @@ using System;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using OfficeOpenXml;
+
+
+
 
 namespace BD_UI
 {
@@ -15,6 +19,7 @@ namespace BD_UI
         string selectedTableName;
         string RelatedTable_Name;
         string database;
+
         public Playground(MySqlConnection connection, string cnx_str, string cnx_str2, string db)
         {
             InitializeComponent();
@@ -287,7 +292,7 @@ namespace BD_UI
         {
             //List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
 
-            Editor editor = new Editor(connection, cnx_str , database);
+            Editor editor = new Editor(connection, cnx_str, database);
             editor.ShowDialog();
             if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
             {
@@ -298,7 +303,7 @@ namespace BD_UI
         private void add_Click(object sender, EventArgs e)
         {
             List<string> primaryKeys = GetPrimaryKeys(connection, database, selectedTableName);
-            Add add = new Add(connection, selectedTableName , primaryKeys);
+            Add add = new Add(connection, selectedTableName, primaryKeys);
             add.ShowDialog();
             int r = add.InsertResult;
             if (r == 1)
@@ -387,7 +392,7 @@ namespace BD_UI
                 DataGridViewRow row = RelatedTableData.Rows[e.RowIndex];
                 int id = Convert.ToInt32(row.Cells["id"].Value);
                 //List<string> primaryKeys = GetPrimaryKeys(connection, database, RelatedTable_Name);
-                Editor editor = new Editor(connection, cnx_str, database , id, RelatedTable_Name);
+                Editor editor = new Editor(connection, cnx_str, database, id, RelatedTable_Name);
                 editor.ShowDialog();
                 if (editor.UpdateResult == 1 || editor.DeleteResult == 1)
                 {
@@ -512,25 +517,31 @@ namespace BD_UI
         }
         private void ExportToExcel(DataGridView dataGridView)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; 
+
             if (dataGridView == null || dataGridView.Rows.Count == 0)
             {
-                MessageBox.Show("Aucune donnée à exporter.", "Export CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Aucune donnée à exporter.", "Export Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Excel Documents (*.xlsx)|*.xlsx";
                 sfd.FileName = $"{selectedTableName}.xlsx";
+
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     using (ExcelPackage package = new ExcelPackage(new FileInfo(sfd.FileName)))
                     {
                         ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
+
                         for (int i = 0; i < dataGridView.Columns.Count; i++)
                         {
                             worksheet.Cells[1, i + 1].Value = dataGridView.Columns[i].HeaderText;
                         }
+
                         for (int i = 0; i < dataGridView.Rows.Count; i++)
                         {
                             for (int j = 0; j < dataGridView.Columns.Count; j++)
@@ -538,14 +549,18 @@ namespace BD_UI
                                 worksheet.Cells[i + 2, j + 1].Value = dataGridView.Rows[i].Cells[j].Value?.ToString();
                             }
                         }
+
+                        worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
                         package.Save();
                     }
-                    MessageBox.Show("Données exportées avec succès.", "Export Excel");
+
+                    MessageBox.Show("Données exportées avec succès.", "Export Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de l'exportation vers Excel : {ex.Message}", "Erreur");
+                MessageBox.Show($"Erreur lors de l'exportation vers Excel : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void cSVToolStripMenuItem_Click(object sender, EventArgs e)
@@ -580,7 +595,6 @@ namespace BD_UI
                         }
                         sw.WriteLine();
 
-                        // Écriture des données de chaque ligne
                         foreach (DataGridViewRow row in dataGridView.Rows)
                         {
                             for (int i = 0; i < dataGridView.Columns.Count; i++)
@@ -648,6 +662,14 @@ namespace BD_UI
             Disconnect();
 
             return primaryKeys;
+        }
+
+        private void créerUneNouvelleTableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateTableForm createTableForm = new CreateTableForm(connection);
+            createTableForm.ShowDialog();
+            LoadTables();
+
         }
     }
 }

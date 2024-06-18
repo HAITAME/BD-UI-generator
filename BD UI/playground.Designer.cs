@@ -55,6 +55,7 @@
             cSVToolStripMenuItem = new ToolStripMenuItem();
             etatToolStripMenuItem = new ToolStripMenuItem();
             deconnecterToolStripMenuItem = new ToolStripMenuItem();
+            créerUneNouvelleTableToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -278,7 +279,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem, deconnecterToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { RafraichirToolStripMenuItem, changerDeBaseDeDonnéesToolStripMenuItem, exporterLesDonnéesToolStripMenuItem, etatToolStripMenuItem, créerUneNouvelleTableToolStripMenuItem, deconnecterToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(983, 28);
@@ -309,14 +310,14 @@
             // excelToolStripMenuItem
             // 
             excelToolStripMenuItem.Name = "excelToolStripMenuItem";
-            excelToolStripMenuItem.Size = new Size(224, 26);
+            excelToolStripMenuItem.Size = new Size(126, 26);
             excelToolStripMenuItem.Text = "Excel";
             excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
             // 
             // cSVToolStripMenuItem
             // 
             cSVToolStripMenuItem.Name = "cSVToolStripMenuItem";
-            cSVToolStripMenuItem.Size = new Size(224, 26);
+            cSVToolStripMenuItem.Size = new Size(126, 26);
             cSVToolStripMenuItem.Text = "CSV";
             cSVToolStripMenuItem.Click += cSVToolStripMenuItem_Click;
             // 
@@ -333,6 +334,13 @@
             deconnecterToolStripMenuItem.Size = new Size(107, 24);
             deconnecterToolStripMenuItem.Text = "Deconnecter";
             deconnecterToolStripMenuItem.Click += deconnecterToolStripMenuItem_Click;
+            // 
+            // créerUneNouvelleTableToolStripMenuItem
+            // 
+            créerUneNouvelleTableToolStripMenuItem.Name = "créerUneNouvelleTableToolStripMenuItem";
+            créerUneNouvelleTableToolStripMenuItem.Size = new Size(184, 24);
+            créerUneNouvelleTableToolStripMenuItem.Text = "Créer une nouvelle table";
+            créerUneNouvelleTableToolStripMenuItem.Click += créerUneNouvelleTableToolStripMenuItem_Click;
             // 
             // Playground
             // 
@@ -397,5 +405,6 @@
         private ToolStripMenuItem etatToolStripMenuItem;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private ToolStripMenuItem deconnecterToolStripMenuItem;
+        private ToolStripMenuItem créerUneNouvelleTableToolStripMenuItem;
     }
 }
