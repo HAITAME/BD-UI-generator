@@ -321,20 +321,20 @@ namespace BD_UI
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.BackColor = Color.DimGray;
+            splitContainer1.Panel2.BackColor = Color.White;
             splitContainer1.Size = new Size(798, 501);
             splitContainer1.SplitterDistance = 266;
             splitContainer1.TabIndex = 0;
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.Transparent;
             panel2.Controls.Add(Executer);
             panel2.Controls.Add(Effacer);
-            panel2.Location = new Point(12, 3);
+            panel2.Location = new Point(12, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(781, 34);
+            panel2.Size = new Size(764, 34);
             panel2.TabIndex = 4;
             // 
             // Executer
@@ -360,9 +360,11 @@ namespace BD_UI
             // InputQuery
             // 
             InputQuery.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            InputQuery.Location = new Point(12, 41);
+            InputQuery.BackColor = SystemColors.HighlightText;
+            InputQuery.BorderStyle = BorderStyle.FixedSingle;
+            InputQuery.Location = new Point(12, 42);
             InputQuery.Name = "InputQuery";
-            InputQuery.Size = new Size(781, 211);
+            InputQuery.Size = new Size(764, 211);
             InputQuery.TabIndex = 1;
             InputQuery.Text = "";
             // 

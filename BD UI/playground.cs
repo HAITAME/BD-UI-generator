@@ -438,6 +438,7 @@ namespace BD_UI
             ViewStructure.DataSource = null;
             supprimerLaTable.Enabled = false;
             supprimerLaTable.Visible = false;
+            queryHistory.Clear();
             ClearRelatedTableData();
             if (MainTab.TabPages.Contains(Parcourir))
             {
