@@ -51,8 +51,9 @@ namespace BD_UI
             Relation = new TabPage();
             SqlPlayGround = new TabPage();
             splitContainer1 = new SplitContainer();
-            button2 = new Button();
+            panel2 = new Panel();
             Executer = new Button();
+            Effacer = new Button();
             InputQuery = new RichTextBox();
             RafraichirToolStripMenuItem = new ToolStripMenuItem();
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
@@ -80,6 +81,7 @@ namespace BD_UI
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.SuspendLayout();
+            panel2.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -309,9 +311,8 @@ namespace BD_UI
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.BackColor = Color.DarkGray;
-            splitContainer1.Panel1.Controls.Add(button2);
-            splitContainer1.Panel1.Controls.Add(Executer);
+            splitContainer1.Panel1.BackColor = Color.Transparent;
+            splitContainer1.Panel1.Controls.Add(panel2);
             splitContainer1.Panel1.Controls.Add(InputQuery);
             // 
             // splitContainer1.Panel2
@@ -321,24 +322,36 @@ namespace BD_UI
             splitContainer1.SplitterDistance = 266;
             splitContainer1.TabIndex = 0;
             // 
-            // button2
+            // panel2
             // 
-            button2.Location = new Point(682, 73);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 29);
-            button2.TabIndex = 3;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            panel2.BackColor = Color.Transparent;
+            panel2.Controls.Add(Executer);
+            panel2.Controls.Add(Effacer);
+            panel2.Location = new Point(672, 10);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(119, 242);
+            panel2.TabIndex = 4;
             // 
             // Executer
             // 
-            Executer.Location = new Point(682, 27);
+            Executer.Location = new Point(10, 31);
             Executer.Name = "Executer";
             Executer.Size = new Size(94, 29);
             Executer.TabIndex = 2;
             Executer.Text = "Exécuter";
             Executer.UseVisualStyleBackColor = true;
             Executer.Click += Executer_Click;
+            // 
+            // Effacer
+            // 
+            Effacer.Location = new Point(10, 103);
+            Effacer.Name = "Effacer";
+            Effacer.Size = new Size(94, 29);
+            Effacer.TabIndex = 3;
+            Effacer.Text = "Effacer";
+            Effacer.UseVisualStyleBackColor = true;
+            Effacer.Click += Effacer_Click;
             // 
             // InputQuery
             // 
@@ -462,6 +475,7 @@ namespace BD_UI
             splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -504,7 +518,8 @@ namespace BD_UI
         private TabPage SqlPlayGround;
         private SplitContainer splitContainer1;
         private RichTextBox InputQuery;
-        private Button button2;
+        private Button Effacer;
         private Button Executer;
+        private Panel panel2;
     }
 }

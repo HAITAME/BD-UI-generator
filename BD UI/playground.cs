@@ -813,10 +813,8 @@ namespace BD_UI
 
         private void Executer_Click(object sender, EventArgs e)
         {
-            // Clear previous controls
             splitContainer1.Panel2.Controls.Clear();
 
-            // Create a TextBox for messages
             TextBox messageTextBox = new TextBox
             {
                 Multiline = true,
@@ -826,10 +824,8 @@ namespace BD_UI
                 ScrollBars = ScrollBars.Vertical
             };
 
-            // Get the query from the input
             string query = InputQuery.Text;
 
-            // Create a DataGridView for displaying results
             DataGridView InputQueryResult = new DataGridView
             {
                 Dock = DockStyle.Fill,
@@ -853,11 +849,11 @@ namespace BD_UI
                 }
                 else
                 {
-                    // Handle non-SELECT queries (INSERT, UPDATE, DELETE, etc.)
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         int rowsAffected = cmd.ExecuteNonQuery();
                         messageTextBox.Text = $"Requête exécutée avec succès. {rowsAffected} lignes affectées.";
+                        messageTextBox.ForeColor = Color.Green;
                         splitContainer1.Panel2.Controls.Add(messageTextBox);
                     }
                 }
@@ -865,11 +861,14 @@ namespace BD_UI
             catch (MySqlException ex)
             {
                 messageTextBox.Text = $"Erreur MySQL : {ex.Message}";
+                messageTextBox.ForeColor = Color.Red;
+
                 splitContainer1.Panel2.Controls.Add(messageTextBox);
             }
             catch (Exception ex)
             {
                 messageTextBox.Text = $"Erreur : {ex.Message}";
+                messageTextBox.ForeColor = Color.Red;
                 splitContainer1.Panel2.Controls.Add(messageTextBox);
             }
             finally
@@ -883,7 +882,11 @@ namespace BD_UI
             return query.Trim().StartsWith("SELECT", StringComparison.OrdinalIgnoreCase);
         }
 
-
+        private void Effacer_Click(object sender, EventArgs e)
+        {
+            InputQuery.Clear();
+            splitContainer1.Panel2.Controls.Clear();
+        }
     }
 }
 
