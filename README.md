@@ -88,7 +88,7 @@ Pour installer et exécuter l'application sur votre machine locale, suivez ces �
 
 1. Clonez le référentiel GitHub sur votre machine locale :
    ```bash
-   git clone https://github.com/votre-utilisateur/votre-projet.git
+   git clone https://github.com/HAITAME/BD-UI-generator.git
    ```
 2. Ouvrez le projet dans Visual Studio.
 3. Compilez le projet pour restaurer les packages NuGet nécessaires.
