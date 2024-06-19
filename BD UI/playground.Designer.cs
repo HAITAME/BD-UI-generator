@@ -55,6 +55,8 @@ namespace BD_UI
             Executer = new Button();
             Effacer = new Button();
             InputQuery = new RichTextBox();
+            historique = new TabPage();
+            HistoriqueListView = new ListView();
             RafraichirToolStripMenuItem = new ToolStripMenuItem();
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
             exporterLesDonnéesToolStripMenuItem = new ToolStripMenuItem();
@@ -82,6 +84,7 @@ namespace BD_UI
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.SuspendLayout();
             panel2.SuspendLayout();
+            historique.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -238,6 +241,7 @@ namespace BD_UI
             MainTab.Controls.Add(Structure);
             MainTab.Controls.Add(Relation);
             MainTab.Controls.Add(SqlPlayGround);
+            MainTab.Controls.Add(historique);
             MainTab.Location = new Point(171, 31);
             MainTab.Name = "MainTab";
             MainTab.SelectedIndex = 0;
@@ -362,6 +366,26 @@ namespace BD_UI
             InputQuery.TabIndex = 1;
             InputQuery.Text = "";
             // 
+            // historique
+            // 
+            historique.Controls.Add(HistoriqueListView);
+            historique.Location = new Point(4, 29);
+            historique.Name = "historique";
+            historique.Size = new Size(804, 507);
+            historique.TabIndex = 4;
+            historique.Text = "Historique des requêtes";
+            historique.UseVisualStyleBackColor = true;
+            // 
+            // HistoriqueListView
+            // 
+            HistoriqueListView.Location = new Point(10, 12);
+            HistoriqueListView.Name = "HistoriqueListView";
+            HistoriqueListView.Size = new Size(791, 486);
+            HistoriqueListView.TabIndex = 0;
+            HistoriqueListView.UseCompatibleStateImageBehavior = false;
+            HistoriqueListView.View = View.List;
+            HistoriqueListView.SelectedIndexChanged += HistoriqueListView_SelectedIndexChanged;
+            // 
             // RafraichirToolStripMenuItem
             // 
             RafraichirToolStripMenuItem.Name = "RafraichirToolStripMenuItem";
@@ -476,6 +500,7 @@ namespace BD_UI
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             panel2.ResumeLayout(false);
+            historique.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -521,5 +546,7 @@ namespace BD_UI
         private Button Effacer;
         private Button Executer;
         private Panel panel2;
+        private TabPage historique;
+        private ListView HistoriqueListView;
     }
 }

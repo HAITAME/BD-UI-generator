@@ -21,6 +21,8 @@ namespace BD_UI
         string selectedTableName;
         string RelatedTable_Name;
         string database;
+        private List<string> queryHistory = new List<string>();
+
 
         public Playground(MySqlConnection connection, string cnx_str, string cnx_str2, string db)
         {
@@ -35,7 +37,7 @@ namespace BD_UI
             MainTab.TabPages.Remove(Relation);
             MainTab.TabPages.Remove(Parcourir);
             MainTab.TabPages.Remove(Structure);
-
+            SetUpHistoriqueListView();
             LoadTables();
             this.cnx_str2 = cnx_str2;
         }
@@ -437,7 +439,7 @@ namespace BD_UI
             supprimerLaTable.Enabled = false;
             supprimerLaTable.Visible = false;
             ClearRelatedTableData();
-            if ( MainTab.TabPages.Contains(Parcourir))
+            if (MainTab.TabPages.Contains(Parcourir))
             {
                 MainTab.TabPages.Remove(Parcourir);
             }
@@ -659,6 +661,7 @@ namespace BD_UI
         private void deconnecterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Disconnect();
+            ClearTabPages();
             this.Hide();
             Login login = new Login();
             login.ShowDialog();
@@ -848,7 +851,7 @@ namespace BD_UI
                     string query = queryArray[i].Trim();
                     if (string.IsNullOrWhiteSpace(query))
                     {
-                        continue; 
+                        continue;
                     }
 
                     TabPage tabPage = new TabPage($"Requête {i + 1}");
@@ -894,6 +897,8 @@ namespace BD_UI
                                 tabPage.Controls.Add(messageTextBox);
                             }
                         }
+                        queryHistory.Add(query);
+                        UpdateQueryHistoryListView();
                     }
                     catch (MySqlException ex)
                     {
@@ -964,6 +969,8 @@ namespace BD_UI
                             splitContainer1.Panel2.Controls.Add(messageTextBox);
                         }
                     }
+                    queryHistory.Add(query);
+                    UpdateQueryHistoryListView();
                 }
                 catch (MySqlException ex)
                 {
@@ -994,6 +1001,36 @@ namespace BD_UI
             InputQuery.Clear();
             splitContainer1.Panel2.Controls.Clear();
 
+        }
+
+
+        private void SetUpHistoriqueListView()
+        {
+            HistoriqueListView.View = View.Details;
+            HistoriqueListView.Columns.Add("Historique des requêtes", 500);
+        }
+        private void UpdateQueryHistoryListView()
+        {
+            HistoriqueListView.Items.Clear();
+
+
+
+
+            foreach (string query in queryHistory)
+            {
+                HistoriqueListView.Items.Add(new ListViewItem(new string[] { query }));
+            }
+        }
+
+        private void HistoriqueListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (HistoriqueListView.SelectedItems.Count > 0)
+            {
+                ListViewItem item = HistoriqueListView.SelectedItems[0];
+                InputQuery.Text = item.SubItems[0].Text;
+                MainTab.SelectedTab = SqlPlayGround;
+
+            }
         }
     }
 }
