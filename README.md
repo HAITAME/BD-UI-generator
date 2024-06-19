@@ -126,39 +126,39 @@ Pour installer et exécuter l'application sur votre machine locale, suivez ces �
 2. Cliquez sur "État" pour afficher les informations sur l'état du serveur, les processus et les statistiques.
 
 ## Captures d'écran <a name="captures-décran"></a>
-# 1.Interface de Connexion
+### 1.Interface de Connexion
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/cf96df2a-00fc-4fdf-b405-a200e8c75536)
 
-# 2.Structure des Tables, Contenu et Relations
+### 2.Structure des Tables, Contenu et Relations
 Pour chaque table listée, vous avez la possibilité de parcourir et visualiser les données contenues. Cela vous permet de voir les enregistrements existants et de naviguer facilement entre eux.
 
 
-### Affichage de la Structure des Tables
+#### Affichage de la Structure des Tables
 
 Après avoir sélectionné une base de données et connecté l'application, vous pouvez visualiser la structure détaillée de chaque table disponible. Cela inclut les noms des colonnes, les types de données, les contraintes (comme les clés primaires et les clés étrangères) et d'autres propriétés pertinentes.
 
-### Contenu des Tables
+#### Contenu des Tables
 
 Pour chaque table listée, vous avez la possibilité de parcourir et visualiser les données contenues. Cela vous permet de voir les enregistrements existants et de naviguer facilement entre eux.
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/2785439a-5d7d-4b90-ae10-82cd824cf071)
 
-### Affichage de la Structure des Tables
+#### Affichage de la Structure des Tables
 
 Après avoir sélectionné une base de données et connecté l'application, vous pouvez visualiser la structure détaillée de chaque table disponible. Cela inclut les noms des colonnes, les types de données, les contraintes (comme les clés primaires et les clés étrangères) et d'autres propriétés pertinentes.
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/7f7e33ab-182b-4917-8881-57100bccb9ce)
 
-### Relations entre les Tables
+#### Relations entre les Tables
 
 L'application détecte automatiquement les relations entre les tables si des clés étrangères sont définies dans la base de données. Vous pouvez explorer ces relations pour comprendre comment différentes tables sont liées les unes aux autres.
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/f55c8467-0009-4f7e-928b-98adb8ef0bac)
 
-# 3.Édition des Données
+### 3.Édition des Données
 
-### Édition Directe des Enregistrements
+#### Édition Directe des Enregistrements
 
 En double-cliquant sur une ligne de la table affichée, une fenêtre d'édition s'ouvre, permettant à l'utilisateur de modifier les valeurs des champs. Cela offre une manière simple et directe de mettre à jour les données existantes.
 
@@ -167,7 +167,7 @@ En double-cliquant sur une ligne de la table affichée, une fenêtre d'édition 
 
 
 
-### Gestion Avancée des Enregistrements
+#### Gestion Avancée des Enregistrements
 
 En plus de l'édition directe, l'application propose une interface pour gérer les enregistrements de manière plus avancée. Vous pouvez naviguer entre les enregistrements à l'aide des boutons "Précédent" et "Suivant", sauvegarder les modifications apportées, ou même supprimer des enregistrements en toute simplicité.
 
@@ -175,16 +175,16 @@ En plus de l'édition directe, l'application propose une interface pour gérer l
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/3b7f1e9f-69b0-4504-b35d-4ac994d631da)
 
 
-# 4.Ajout de Données
+### 4.Ajout de Données
 L'application offre une interface intuitive pour ajouter de nouvelles données aux tables existantes.
 
-### Interface d'Ajout de Données
+#### Interface d'Ajout de Données
 
 Les utilisateurs peuvent facilement naviguer vers la table désirée et utiliser le formulaire d'ajout pour insérer de nouveaux enregistrements.
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/de85d641-7d40-4173-beb9-206c9d1e0d4f)
 
-### Processus d'Ajout
+#### Processus d'Ajout
 
 1. **Sélection de la Table :** Choisissez la table depuis la liste déroulante des tables disponibles.
    
@@ -192,15 +192,15 @@ Les utilisateurs peuvent facilement naviguer vers la table désirée et utiliser
 
 3. **Enregistrement :** Validez et enregistrez les données en cliquant sur le bouton "Enregistrer".
 
-#  5.Exécution de Requêtes SQL
-### Exécution d'une Seule Requête
+###  5.Exécution de Requêtes SQL
+#### Exécution d'une Seule Requête
 
 L'application permet aux utilisateurs d'exécuter des requêtes SQL personnalisées directement depuis l'interface. Cette capture d'écran illustre l'exécution d'une seule requête SELECT pour récupérer des données spécifiques d'une table.
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/d2d20950-43e1-4177-abff-24e709beab11)
 
 
-### Exécution de Plusieurs Requêtes
+#### Exécution de Plusieurs Requêtes
 
 Les utilisateurs peuvent également exécuter plusieurs requêtes SQL en même temps à partir de l'interface. Cette capture d'écran montre l'exécution simultanée de trois requêtes : SELECT, INSERT et UPDATE, avec les résultats affichés pour chaque requête.
 
@@ -212,7 +212,7 @@ Les utilisateurs peuvent également exécuter plusieurs requêtes SQL en même t
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/c29f6fef-2c01-4572-9115-ffa0580170d0)
 
 
-# 6.Gestion de l'Historique
+### 6.Gestion de l'Historique
 
 L'application conserve un historique des requêtes SQL récemment exécutées, ce qui permet aux utilisateurs de :
 
@@ -223,7 +223,7 @@ L'application conserve un historique des requêtes SQL récemment exécutées, c
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/b06fbb59-648c-46f5-bb06-01d221cb63c5)
 
 
-# 7.Exportation des Données
+### 7.Exportation des Données
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/5fdeb5d7-7b3c-4722-8f39-bb62dc6b1e10)
 
 L'application permet d'exporter les données de la base de données MySQL dans divers formats pour une utilisation ultérieure ou pour partager les informations avec d'autres outils. Les formats disponibles sont :
@@ -241,7 +241,7 @@ L'application permet d'exporter les données de la base de données MySQL dans d
 
 Ces options d'exportation permettent aux utilisateurs de choisir le format qui convient le mieux à leurs besoins, qu'il s'agisse de partager des rapports, d'analyser les données avec d'autres logiciels, ou de conserver des copies locales des informations.
 
-# 8.État du Serveur MySQL
+### 8.État du Serveur MySQL
 
 Un tableau de bord intégré affiche l'état actuel du serveur MySQL, y compris les informations sur les processus en cours, la charge du serveur et les statistiques sur les requêtes. Cela permet aux administrateurs de surveiller efficacement la santé et les performances du serveur.
 
@@ -251,7 +251,7 @@ Un tableau de bord intégré affiche l'état actuel du serveur MySQL, y compris 
 
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/784a8534-bec5-4e63-aa2b-6f688faaff38)
 
-# 9.Création de Nouvelle Table
+### 9.Création de Nouvelle Table
 
 Les utilisateurs peuvent créer de nouvelles tables dans la base de données MySQL à l'aide d'une interface intuitive. Ils peuvent spécifier les colonnes personnalisées avec des options telles que les clés primaires, les types de données et les contraintes.
 
@@ -259,7 +259,7 @@ Les utilisateurs peuvent créer de nouvelles tables dans la base de données MyS
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/813a296e-b8e0-48ce-8fd4-40bf01449069)
 
 
-# 10.Suppression de Table Existante
+### 10.Suppression de Table Existante
 
 Cette fonctionnalité permet de supprimer facilement une table existante dans la base de données MySQL directement depuis l'interface utilisateur. Une confirmation est généralement demandée pour éviter les suppressions accidentelles.
 
