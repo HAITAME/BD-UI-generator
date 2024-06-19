@@ -36,7 +36,6 @@ namespace BD_UI
             MainTab.TabPages.Remove(Parcourir);
             MainTab.TabPages.Remove(Structure);
 
-
             LoadTables();
             this.cnx_str2 = cnx_str2;
         }
@@ -105,12 +104,15 @@ namespace BD_UI
                 LoadTableData(selectedTableName);
                 if (!MainTab.TabPages.Contains(Parcourir))
                 {
-                    MainTab.TabPages.Add(Parcourir);
+                    //MainTab.TabPages.Add(Parcourir);
+                    MainTab.TabPages.Insert(0, Parcourir);
+
                 }
                 LoadTableSchema(selectedTableName);
                 if (!MainTab.TabPages.Contains(Structure))
                 {
-                    MainTab.TabPages.Add(Structure);
+                    //MainTab.TabPages.Add(Structure);
+                    MainTab.TabPages.Insert(1, Structure);
                 }
 
                 supprimerLaTable.Enabled = true;
@@ -187,14 +189,19 @@ namespace BD_UI
                     DisplayRelatedTables(relatedTables);
                     if (!MainTab.TabPages.Contains(Relation))
                     {
-                        MainTab.TabPages.Add(Relation);
+                        //MainTab.TabPages.Add(Relation);
+                        MainTab.TabPages.Insert(2, Relation);
+
                     }
                 }
                 else
                 {
                     MainTab.SelectedTab = Parcourir;
-                    MainTab.TabPages.Remove(Relation);
-                    ClearRelatedTableData();
+                    if (MainTab.TabPages.Contains(Relation))
+                    {
+                        MainTab.TabPages.Remove(Relation);
+                        ClearRelatedTableData();
+                    }
                 }
             }
             catch (Exception ex)
@@ -736,7 +743,7 @@ namespace BD_UI
 
         private void pDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                        ExportToPDF(table_data);
+            ExportToPDF(table_data);
 
         }
         private void ExportToPDF(DataGridView dataGridView)
@@ -797,6 +804,39 @@ namespace BD_UI
             }
         }
 
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Executer_Click(object sender, EventArgs e)
+        {
+            string query = InputQuery.Text;
+            try
+            {
+                Connecte();
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    InputQueryResult.DataSource = dt;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+        }
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace BD_UI
+﻿using System.Windows.Forms;
+
+namespace BD_UI
 {
     partial class Playground
     {
@@ -47,17 +49,23 @@
             Structure = new TabPage();
             ViewStructure = new DataGridView();
             Relation = new TabPage();
+            tabPage1 = new TabPage();
+            splitContainer1 = new SplitContainer();
+            button2 = new Button();
+            Executer = new Button();
+            InputQuery = new RichTextBox();
             RafraichirToolStripMenuItem = new ToolStripMenuItem();
             changerDeBaseDeDonnéesToolStripMenuItem = new ToolStripMenuItem();
             exporterLesDonnéesToolStripMenuItem = new ToolStripMenuItem();
             excelToolStripMenuItem = new ToolStripMenuItem();
             cSVToolStripMenuItem = new ToolStripMenuItem();
+            pDFToolStripMenuItem = new ToolStripMenuItem();
             etatToolStripMenuItem = new ToolStripMenuItem();
             créerUneNouvelleTableToolStripMenuItem = new ToolStripMenuItem();
             supprimerLaTable = new ToolStripMenuItem();
             deconnecterToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
-            pDFToolStripMenuItem = new ToolStripMenuItem();
+            InputQueryResult = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -69,7 +77,13 @@
             Structure.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ViewStructure).BeginInit();
             Relation.SuspendLayout();
+            tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)InputQueryResult).BeginInit();
             SuspendLayout();
             // 
             // list_tables
@@ -224,11 +238,11 @@
             MainTab.Controls.Add(Parcourir);
             MainTab.Controls.Add(Structure);
             MainTab.Controls.Add(Relation);
+            MainTab.Controls.Add(tabPage1);
             MainTab.Location = new Point(171, 31);
             MainTab.Name = "MainTab";
             MainTab.SelectedIndex = 0;
             MainTab.Size = new Size(812, 540);
-            MainTab.SizeMode = TabSizeMode.FillToRight;
             MainTab.TabIndex = 15;
             // 
             // Parcourir
@@ -278,6 +292,67 @@
             Relation.Text = "Relation";
             Relation.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(splitContainer1);
+            tabPage1.Location = new Point(4, 29);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(804, 507);
+            tabPage1.TabIndex = 3;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.BackColor = Color.DarkGray;
+            splitContainer1.Panel1.Controls.Add(button2);
+            splitContainer1.Panel1.Controls.Add(Executer);
+            splitContainer1.Panel1.Controls.Add(InputQuery);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.BackColor = Color.DimGray;
+            splitContainer1.Panel2.Controls.Add(InputQueryResult);
+            splitContainer1.Size = new Size(798, 501);
+            splitContainer1.SplitterDistance = 266;
+            splitContainer1.TabIndex = 0;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(682, 73);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 29);
+            button2.TabIndex = 3;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // Executer
+            // 
+            Executer.Location = new Point(682, 27);
+            Executer.Name = "Executer";
+            Executer.Size = new Size(94, 29);
+            Executer.TabIndex = 2;
+            Executer.Text = "Exécuter";
+            Executer.UseVisualStyleBackColor = true;
+            Executer.Click += Executer_Click;
+            // 
+            // InputQuery
+            // 
+            InputQuery.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            InputQuery.Location = new Point(12, 9);
+            InputQuery.Name = "InputQuery";
+            InputQuery.Size = new Size(651, 243);
+            InputQuery.TabIndex = 1;
+            InputQuery.Text = "";
+            // 
             // RafraichirToolStripMenuItem
             // 
             RafraichirToolStripMenuItem.Name = "RafraichirToolStripMenuItem";
@@ -302,16 +377,23 @@
             // excelToolStripMenuItem
             // 
             excelToolStripMenuItem.Name = "excelToolStripMenuItem";
-            excelToolStripMenuItem.Size = new Size(224, 26);
+            excelToolStripMenuItem.Size = new Size(126, 26);
             excelToolStripMenuItem.Text = "Excel";
             excelToolStripMenuItem.Click += excelToolStripMenuItem_Click;
             // 
             // cSVToolStripMenuItem
             // 
             cSVToolStripMenuItem.Name = "cSVToolStripMenuItem";
-            cSVToolStripMenuItem.Size = new Size(224, 26);
+            cSVToolStripMenuItem.Size = new Size(126, 26);
             cSVToolStripMenuItem.Text = "CSV";
             cSVToolStripMenuItem.Click += cSVToolStripMenuItem_Click;
+            // 
+            // pDFToolStripMenuItem
+            // 
+            pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
+            pDFToolStripMenuItem.Size = new Size(126, 26);
+            pDFToolStripMenuItem.Text = "PDF";
+            pDFToolStripMenuItem.Click += pDFToolStripMenuItem_Click;
             // 
             // etatToolStripMenuItem
             // 
@@ -353,12 +435,14 @@
             menuStrip1.TabIndex = 16;
             menuStrip1.Text = "menuStrip1";
             // 
-            // pDFToolStripMenuItem
+            // InputQueryResult
             // 
-            pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
-            pDFToolStripMenuItem.Size = new Size(224, 26);
-            pDFToolStripMenuItem.Text = "PDF";
-            pDFToolStripMenuItem.Click += pDFToolStripMenuItem_Click;
+            InputQueryResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            InputQueryResult.Location = new Point(6, 7);
+            InputQueryResult.Name = "InputQueryResult";
+            InputQueryResult.RowHeadersWidth = 51;
+            InputQueryResult.Size = new Size(781, 219);
+            InputQueryResult.TabIndex = 0;
             // 
             // Playground
             // 
@@ -387,8 +471,14 @@
             Structure.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ViewStructure).EndInit();
             Relation.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)InputQueryResult).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -426,5 +516,11 @@
         private ToolStripMenuItem deconnecterToolStripMenuItem;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem pDFToolStripMenuItem;
+        private TabPage tabPage1;
+        private SplitContainer splitContainer1;
+        private RichTextBox InputQuery;
+        private Button button2;
+        private Button Executer;
+        private DataGridView InputQueryResult;
     }
 }
