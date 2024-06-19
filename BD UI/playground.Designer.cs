@@ -49,7 +49,7 @@ namespace BD_UI
             Structure = new TabPage();
             ViewStructure = new DataGridView();
             Relation = new TabPage();
-            tabPage1 = new TabPage();
+            SqlPlayGround = new TabPage();
             splitContainer1 = new SplitContainer();
             button2 = new Button();
             Executer = new Button();
@@ -65,7 +65,6 @@ namespace BD_UI
             supprimerLaTable = new ToolStripMenuItem();
             deconnecterToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
-            InputQueryResult = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)RelatedTableData).BeginInit();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -77,13 +76,11 @@ namespace BD_UI
             Structure.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ViewStructure).BeginInit();
             Relation.SuspendLayout();
-            tabPage1.SuspendLayout();
+            SqlPlayGround.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)InputQueryResult).BeginInit();
             SuspendLayout();
             // 
             // list_tables
@@ -238,7 +235,7 @@ namespace BD_UI
             MainTab.Controls.Add(Parcourir);
             MainTab.Controls.Add(Structure);
             MainTab.Controls.Add(Relation);
-            MainTab.Controls.Add(tabPage1);
+            MainTab.Controls.Add(SqlPlayGround);
             MainTab.Location = new Point(171, 31);
             MainTab.Name = "MainTab";
             MainTab.SelectedIndex = 0;
@@ -292,16 +289,16 @@ namespace BD_UI
             Relation.Text = "Relation";
             Relation.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // SqlPlayGround
             // 
-            tabPage1.Controls.Add(splitContainer1);
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(804, 507);
-            tabPage1.TabIndex = 3;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
+            SqlPlayGround.Controls.Add(splitContainer1);
+            SqlPlayGround.Location = new Point(4, 29);
+            SqlPlayGround.Name = "SqlPlayGround";
+            SqlPlayGround.Padding = new Padding(3);
+            SqlPlayGround.Size = new Size(804, 507);
+            SqlPlayGround.TabIndex = 3;
+            SqlPlayGround.Text = "Exécution des Requêtes SQL";
+            SqlPlayGround.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -320,7 +317,6 @@ namespace BD_UI
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = Color.DimGray;
-            splitContainer1.Panel2.Controls.Add(InputQueryResult);
             splitContainer1.Size = new Size(798, 501);
             splitContainer1.SplitterDistance = 266;
             splitContainer1.TabIndex = 0;
@@ -435,15 +431,6 @@ namespace BD_UI
             menuStrip1.TabIndex = 16;
             menuStrip1.Text = "menuStrip1";
             // 
-            // InputQueryResult
-            // 
-            InputQueryResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            InputQueryResult.Location = new Point(6, 7);
-            InputQueryResult.Name = "InputQueryResult";
-            InputQueryResult.RowHeadersWidth = 51;
-            InputQueryResult.Size = new Size(781, 219);
-            InputQueryResult.TabIndex = 0;
-            // 
             // Playground
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -471,14 +458,12 @@ namespace BD_UI
             Structure.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ViewStructure).EndInit();
             Relation.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
+            SqlPlayGround.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)InputQueryResult).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -516,11 +501,10 @@ namespace BD_UI
         private ToolStripMenuItem deconnecterToolStripMenuItem;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem pDFToolStripMenuItem;
-        private TabPage tabPage1;
+        private TabPage SqlPlayGround;
         private SplitContainer splitContainer1;
         private RichTextBox InputQuery;
         private Button button2;
         private Button Executer;
-        private DataGridView InputQueryResult;
     }
 }

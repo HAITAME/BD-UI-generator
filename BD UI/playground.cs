@@ -809,34 +809,81 @@ namespace BD_UI
 
         }
 
+
+
         private void Executer_Click(object sender, EventArgs e)
         {
+            // Clear previous controls
+            splitContainer1.Panel2.Controls.Clear();
+
+            // Create a TextBox for messages
+            TextBox messageTextBox = new TextBox
+            {
+                Multiline = true,
+                ReadOnly = true,
+                Dock = DockStyle.Fill,
+                BackColor = Color.White,
+                ScrollBars = ScrollBars.Vertical
+            };
+
+            // Get the query from the input
             string query = InputQuery.Text;
+
+            // Create a DataGridView for displaying results
+            DataGridView InputQueryResult = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                ReadOnly = true
+            };
+
             try
             {
                 Connecte();
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+
+                if (EstRequeteSelect(query))
                 {
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    InputQueryResult.DataSource = dt;
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        InputQueryResult.DataSource = dt;
+                        splitContainer1.Panel2.Controls.Add(InputQueryResult);
+                    }
+                }
+                else
+                {
+                    // Handle non-SELECT queries (INSERT, UPDATE, DELETE, etc.)
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        messageTextBox.Text = $"Requête exécutée avec succès. {rowsAffected} lignes affectées.";
+                        splitContainer1.Panel2.Controls.Add(messageTextBox);
+                    }
                 }
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Erreur MySQL : {ex.Message}", "Erreur MySQL");
+                messageTextBox.Text = $"Erreur MySQL : {ex.Message}";
+                splitContainer1.Panel2.Controls.Add(messageTextBox);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur : {ex.Message}", "Erreur");
+                messageTextBox.Text = $"Erreur : {ex.Message}";
+                splitContainer1.Panel2.Controls.Add(messageTextBox);
             }
             finally
             {
                 Disconnect();
             }
-
         }
+
+        private bool EstRequeteSelect(string query)
+        {
+            return query.Trim().StartsWith("SELECT", StringComparison.OrdinalIgnoreCase);
+        }
+
+
     }
 }
 
