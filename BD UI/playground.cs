@@ -436,8 +436,20 @@ namespace BD_UI
             ViewStructure.DataSource = null;
             supprimerLaTable.Enabled = false;
             supprimerLaTable.Visible = false;
-
             ClearRelatedTableData();
+            if ( MainTab.TabPages.Contains(Parcourir))
+            {
+                MainTab.TabPages.Remove(Parcourir);
+            }
+            if (MainTab.TabPages.Contains(Structure))
+            {
+                MainTab.TabPages.Remove(Structure);
+            }
+            if (MainTab.TabPages.Contains(Relation))
+            {
+                MainTab.TabPages.Remove(Relation);
+            }
+
         }
 
         private void RafraichirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -446,7 +458,6 @@ namespace BD_UI
             //HideTabPages()
             this.Refresh();
             ClearTabPages();
-
             LoadTables();
 
         }
@@ -813,67 +824,163 @@ namespace BD_UI
 
         private void Executer_Click(object sender, EventArgs e)
         {
+
+            if (string.IsNullOrWhiteSpace(InputQuery.Text))
+            {
+                MessageBox.Show("Veuillez entrer une requête SQL.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             splitContainer1.Panel2.Controls.Clear();
 
-            TextBox messageTextBox = new TextBox
+            string queries = InputQuery.Text;
+            string[] queryArray = queries.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (queryArray.Length > 1)
             {
-                Multiline = true,
-                ReadOnly = true,
-                Dock = DockStyle.Fill,
-                BackColor = Color.White,
-                ScrollBars = ScrollBars.Vertical
-            };
-
-            string query = InputQuery.Text;
-
-            DataGridView InputQueryResult = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true
-            };
-
-            try
-            {
-                Connecte();
-
-                if (EstRequeteSelect(query))
+                TabControl tabControl = new TabControl
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    Dock = DockStyle.Fill
+                };
+
+                for (int i = 0; i < queryArray.Length; i++)
+                {
+                    string query = queryArray[i].Trim();
+                    if (string.IsNullOrWhiteSpace(query))
                     {
-                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-                        InputQueryResult.DataSource = dt;
-                        splitContainer1.Panel2.Controls.Add(InputQueryResult);
+                        continue; 
+                    }
+
+                    TabPage tabPage = new TabPage($"Requête {i + 1}");
+                    tabControl.TabPages.Add(tabPage);
+
+                    TextBox messageTextBox = new TextBox
+                    {
+                        Multiline = true,
+                        ReadOnly = true,
+                        Dock = DockStyle.Fill,
+                        BackColor = Color.White,
+                        ScrollBars = ScrollBars.Vertical
+                    };
+
+                    DataGridView InputQueryResult = new DataGridView
+                    {
+                        Dock = DockStyle.Fill,
+                        ReadOnly = true
+                    };
+
+                    try
+                    {
+                        Connecte();
+
+                        if (EstRequeteSelect(query))
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                            {
+                                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                                DataTable dt = new DataTable();
+                                adapter.Fill(dt);
+                                InputQueryResult.DataSource = dt;
+                                tabPage.Controls.Add(InputQueryResult);
+                            }
+                        }
+                        else
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                            {
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                messageTextBox.Text = $"Requête exécutée avec succès. {rowsAffected} lignes affectées.";
+                                messageTextBox.ForeColor = Color.Green;
+                                tabPage.Controls.Add(messageTextBox);
+                            }
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        messageTextBox.Text = $"Erreur MySQL : {ex.Message}";
+                        messageTextBox.ForeColor = Color.Red;
+                        tabPage.Controls.Add(messageTextBox);
+                    }
+                    catch (Exception ex)
+                    {
+                        messageTextBox.Text = $"Erreur : {ex.Message}";
+                        messageTextBox.ForeColor = Color.Red;
+                        tabPage.Controls.Add(messageTextBox);
+                    }
+                    finally
+                    {
+                        Disconnect();
                     }
                 }
-                else
+
+                splitContainer1.Panel2.Controls.Add(tabControl);
+            }
+            else
+            {
+                string query = queryArray[0].Trim();
+                if (string.IsNullOrWhiteSpace(query))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    MessageBox.Show("La requête SQL ne peut pas être vide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                TextBox messageTextBox = new TextBox
+                {
+                    Multiline = true,
+                    ReadOnly = true,
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.White,
+                    ScrollBars = ScrollBars.Vertical
+                };
+
+                DataGridView InputQueryResult = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    ReadOnly = true
+                };
+
+                try
+                {
+                    Connecte();
+
+                    if (EstRequeteSelect(query))
                     {
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        messageTextBox.Text = $"Requête exécutée avec succès. {rowsAffected} lignes affectées.";
-                        messageTextBox.ForeColor = Color.Green;
-                        splitContainer1.Panel2.Controls.Add(messageTextBox);
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+                            InputQueryResult.DataSource = dt;
+                            splitContainer1.Panel2.Controls.Add(InputQueryResult);
+                        }
+                    }
+                    else
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            int rowsAffected = cmd.ExecuteNonQuery();
+                            messageTextBox.Text = $"Requête exécutée avec succès. {rowsAffected} lignes affectées.";
+                            messageTextBox.ForeColor = Color.Green;
+                            splitContainer1.Panel2.Controls.Add(messageTextBox);
+                        }
                     }
                 }
-            }
-            catch (MySqlException ex)
-            {
-                messageTextBox.Text = $"Erreur MySQL : {ex.Message}";
-                messageTextBox.ForeColor = Color.Red;
-
-                splitContainer1.Panel2.Controls.Add(messageTextBox);
-            }
-            catch (Exception ex)
-            {
-                messageTextBox.Text = $"Erreur : {ex.Message}";
-                messageTextBox.ForeColor = Color.Red;
-                splitContainer1.Panel2.Controls.Add(messageTextBox);
-            }
-            finally
-            {
-                Disconnect();
+                catch (MySqlException ex)
+                {
+                    messageTextBox.Text = $"Erreur MySQL : {ex.Message}";
+                    messageTextBox.ForeColor = Color.Red;
+                    splitContainer1.Panel2.Controls.Add(messageTextBox);
+                }
+                catch (Exception ex)
+                {
+                    messageTextBox.Text = $"Erreur : {ex.Message}";
+                    messageTextBox.ForeColor = Color.Red;
+                    splitContainer1.Panel2.Controls.Add(messageTextBox);
+                }
+                finally
+                {
+                    Disconnect();
+                }
             }
         }
 
@@ -886,6 +993,7 @@ namespace BD_UI
         {
             InputQuery.Clear();
             splitContainer1.Panel2.Controls.Clear();
+
         }
     }
 }

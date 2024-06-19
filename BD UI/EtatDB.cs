@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing;
+using Microsoft.Msagl.Drawing;
+using Microsoft.Msagl.GraphViewerGdi;
+using System.Linq;
 
 namespace BD_UI
 {
@@ -22,6 +27,9 @@ namespace BD_UI
             ShowInfo();
             ShowProcesses();
             ShowQueryStats();
+            //GenerateDatabaseDiagram(DiagrammePanel);
+
+
         }
 
         private void SetupListView()
@@ -35,7 +43,7 @@ namespace BD_UI
         {
             try
             {
-                listView1.Items.Clear(); 
+                listView1.Items.Clear();
                 using (var connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
@@ -47,11 +55,11 @@ namespace BD_UI
                         "Threads_connected",
                         "Threads_running",
                         "Uptime",
-                        "Questions",        
-                        "Slow_queries",     
-                        "Connections",      
-                        "Aborted_clients",  
-                        "Aborted_connects"  
+                        "Questions",
+                        "Slow_queries",
+                        "Connections",
+                        "Aborted_clients",
+                        "Aborted_connects"
                     };
 
                     foreach (string variableName in variableNames)
@@ -78,11 +86,15 @@ namespace BD_UI
             {
                 MessageBox.Show($"Error retrieving MySQL system variables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         private void SetupListViewProcessus()
         {
-            listViewProcessus.View = View.Details; 
+            listViewProcessus.View = View.Details;
             listViewProcessus.Columns.Add("Id", 50, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("User", 100, HorizontalAlignment.Left);
             listViewProcessus.Columns.Add("Host", 150, HorizontalAlignment.Left);
@@ -95,7 +107,7 @@ namespace BD_UI
 
         private void SetupListViewQueryStat()
         {
-            listViewQueryStat.View = View.Details; 
+            listViewQueryStat.View = View.Details;
             listViewQueryStat.Columns.Add("Statistic", 200, HorizontalAlignment.Left);
             listViewQueryStat.Columns.Add("Value", 100, HorizontalAlignment.Left);
         }
@@ -135,6 +147,10 @@ namespace BD_UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Error retrieving MySQL processes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -183,6 +199,64 @@ namespace BD_UI
             {
                 MessageBox.Show($"Error retrieving MySQL query statistics: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                connection.Close();
+            }
         }
+       /* private void GenerateDatabaseDiagram(Panel diagramPanel)
+        {
+            try
+            {
+
+                connection.Open();
+
+
+
+                    DataTable tables = connection.GetSchema("Tables");
+
+                    Graph graph = new Graph("database");
+
+                    foreach (DataRow row in tables.Rows)
+                    {
+                        string tableName = row[2].ToString();
+                        Node tableNode = graph.AddNode(tableName);
+                        tableNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Box;
+
+                        // Récupération des colonnes
+                        DataTable columns = connection.GetSchema("Columns", new string[] { null, null, tableName });
+
+                        foreach (DataRow column in columns.Rows)
+                        {
+                            string columnName = column["COLUMN_NAME"].ToString();
+                            string dataType = column["DATA_TYPE"].ToString();
+                            string columnInfo = $"{columnName} ({dataType})";
+
+                            Node columnNode = graph.AddNode(columnInfo);
+                            columnNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Ellipse;
+                            graph.AddEdge(tableName, columnInfo);
+                        }
+                    }
+
+                    // Afficher le graphe dans le panel
+                    GViewer viewer = new GViewer
+                    {
+                        Graph = graph,
+                        Dock = DockStyle.Fill
+                    };
+                    diagramPanel.Controls.Clear();
+                    diagramPanel.Controls.Add(viewer);
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error generating database diagram: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        */
     }
 }

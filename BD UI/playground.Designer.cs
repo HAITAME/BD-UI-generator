@@ -328,14 +328,14 @@ namespace BD_UI
             panel2.BackColor = Color.Transparent;
             panel2.Controls.Add(Executer);
             panel2.Controls.Add(Effacer);
-            panel2.Location = new Point(672, 10);
+            panel2.Location = new Point(12, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(119, 242);
+            panel2.Size = new Size(781, 34);
             panel2.TabIndex = 4;
             // 
             // Executer
             // 
-            Executer.Location = new Point(10, 31);
+            Executer.Location = new Point(3, 3);
             Executer.Name = "Executer";
             Executer.Size = new Size(94, 29);
             Executer.TabIndex = 2;
@@ -345,7 +345,7 @@ namespace BD_UI
             // 
             // Effacer
             // 
-            Effacer.Location = new Point(10, 103);
+            Effacer.Location = new Point(103, 3);
             Effacer.Name = "Effacer";
             Effacer.Size = new Size(94, 29);
             Effacer.TabIndex = 3;
@@ -356,9 +356,9 @@ namespace BD_UI
             // InputQuery
             // 
             InputQuery.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            InputQuery.Location = new Point(12, 9);
+            InputQuery.Location = new Point(12, 41);
             InputQuery.Name = "InputQuery";
-            InputQuery.Size = new Size(651, 243);
+            InputQuery.Size = new Size(781, 211);
             InputQuery.TabIndex = 1;
             InputQuery.Text = "";
             // 
