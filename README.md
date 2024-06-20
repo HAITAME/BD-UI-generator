@@ -2,7 +2,7 @@
 
 # Générateur d'Interface de Base de Données
 
-## Description
+## Description:
 
 Ce projet est une application de gestion de bases de données MySQL développée en utilisant C# et .NET Framework. L'objectif principal de cette application est de fournir une interface conviviale et fonctionnelle pour interagir avec des bases de données MySQL. Elle propose des fonctionnalités telles que la création de tables, l'édition de données, l'exécution de requêtes SQL personnalisées, ainsi que l'exportation des données dans divers formats. De plus, elle offre la possibilité de visualiser l'état du serveur, des processus et des statistiques sur les requêtes.
 
