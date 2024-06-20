@@ -267,7 +267,17 @@ Cette fonctionnalité permet de supprimer facilement une table existante dans la
 ![image](https://github.com/HAITAME/BD-UI-generator/assets/111463501/703607a3-926e-4d50-a181-2441d43e1165)
 
 
+## Conclusion
+
+En conclusion, notre application de gestion de bases de données MySQL offre des fonctionnalités essentielles pour interagir avec vos bases de données de manière conviviale. Avec des capacités telles que l'édition des données, l'exécution de requêtes SQL personnalisées et la visualisation de l'état du serveur, elle facilite certaines opérations courantes de gestion et d'analyse des données. Bien que notre solution ne soit pas exhaustive, elle représente un outil utile pour les utilisateurs souhaitant accomplir efficacement des tâches de base de données avec MySQL.
 
 
+***
 
 
+**Développé par :**
+  - [Haitale Laframe](https://github.com/HAITAME)
+  - [Ismail OUKHA](https://github.com/itsmeismaill)
+
+
+###
